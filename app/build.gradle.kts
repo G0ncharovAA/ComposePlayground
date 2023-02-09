@@ -1,18 +1,20 @@
-val composeVersion =  rootProject.extra["compose_version"] as String
+val composeVersion = rootProject.extra["compose_version"] as String
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
 
-    compileSdkVersion(32)
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "com.example.composeplayground"
-        minSdkVersion(23)
-        targetSdkVersion(32)
+        minSdk = 23
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
 
@@ -60,10 +62,17 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+}
+
+kapt {
+    correctErrorTypes = true
 }
