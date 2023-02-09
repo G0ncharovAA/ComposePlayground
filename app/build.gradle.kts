@@ -1,4 +1,6 @@
 val composeVersion = rootProject.extra["compose_version"] as String
+val hiltVersion = rootProject.extra["hilt_version"] as String
+val navVersion =  rootProject.extra["nav_version"] as String
 
 plugins {
     id("com.android.application")
@@ -9,12 +11,12 @@ plugins {
 
 android {
 
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.example.composeplayground"
         minSdk = 23
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -56,14 +58,23 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.9.0")
+
+    // Compose
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
