@@ -1,6 +1,7 @@
 val composeVersion = rootProject.extra["compose_version"] as String
 val hiltVersion = rootProject.extra["hilt_version"] as String
 val navVersion =  rootProject.extra["nav_version"] as String
+val ktorVersion = rootProject.extra["ktor_version"] as String
 
 plugins {
     id("com.android.application")
@@ -24,6 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "BASE_URL", "\"jsonplaceholder.typicode.com\"")
     }
 
     buildTypes {
@@ -75,6 +78,13 @@ dependencies {
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    // Ktor
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
