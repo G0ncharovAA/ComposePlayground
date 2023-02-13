@@ -5,7 +5,9 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class JsonPlaceHolderService @Inject constructor(
     private val ktorClient: HttpClient
 ) {

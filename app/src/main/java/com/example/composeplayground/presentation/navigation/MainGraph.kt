@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.presentation.screens.auth.AuthScreen
 import com.example.composeplayground.presentation.screens.auth.AuthViewModel
 import com.example.composeplayground.presentation.screens.home.HomeScreen
+import com.example.composeplayground.presentation.screens.home.HomeViewModel
 
 @Composable
 fun NavigationMain() {
@@ -31,6 +32,7 @@ fun NavigationMain() {
         composable("home") {
             HomeScreen(
                 navController = navController,
+                viewModel = hiltViewModel<HomeViewModel>(it),
             )
         }
     }

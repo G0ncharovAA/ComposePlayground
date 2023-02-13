@@ -3,7 +3,9 @@ package com.example.composeplayground.domain.interactors
 import com.example.composeplayground.data.repository.UserRepository
 import com.example.composeplayground.domain.entities.User
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserInteractor @Inject constructor(
     private val userRepository: UserRepository
 ) {

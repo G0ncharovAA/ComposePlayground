@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.composeplayground.data.service.JsonPlaceHolderService
 import com.example.composeplayground.domain.entities.User
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository @Inject constructor(
     private val service: JsonPlaceHolderService
 ) {

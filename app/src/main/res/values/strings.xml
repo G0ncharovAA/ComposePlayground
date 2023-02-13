@@ -10,4 +10,8 @@
     <string name="singed_in">Signed in</string>
     <string name="users_loaded">Users loaded</string>
     <string name="enter">Enter</string>
+    <string name="home">Home</string>
+    <string name="todos">ToDos</string>
+    <string name="posts">Posts</string>
+    <string name="albums">Albums</string>
 </resources>
