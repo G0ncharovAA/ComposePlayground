@@ -2,12 +2,14 @@ val composeVersion = rootProject.extra["compose_version"] as String
 val hiltVersion = rootProject.extra["hilt_version"] as String
 val navVersion =  rootProject.extra["nav_version"] as String
 val ktorVersion = rootProject.extra["ktor_version"] as String
+val lifecycleVersion = rootProject.extra["lifecycle_version"] as String
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -67,9 +69,12 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.activity:activity-compose:1.6.1")
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:$hiltVersion")

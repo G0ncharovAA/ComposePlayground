@@ -3,6 +3,7 @@ ext {
     extra["hilt_version"] = "2.44"
     extra["nav_version"] = "2.5.3"
     extra["ktor_version"] = "2.2.3"
+    extra["lifecycle_version"] = "2.5.1"
 }
 
 plugins {
