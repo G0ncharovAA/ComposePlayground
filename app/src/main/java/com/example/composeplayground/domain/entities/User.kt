@@ -9,4 +9,8 @@ data class User(
     @SerialName("name") val name: String,
     @SerialName("username") val userName: String,
     @SerialName("email") val email: String,
+    @SerialName("address") val address: Address,
+    @SerialName("phone") val phone: String,
+    @SerialName("website") val website: String,
+    @SerialName("company") val company: Company,
 )
