@@ -1,5 +1,7 @@
-package com.example.composeplayground.domain.entities
+package com.example.composeplayground.domain.entities.user
 
+import com.example.composeplayground.domain.entities.user.Address
+import com.example.composeplayground.domain.entities.user.Company
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

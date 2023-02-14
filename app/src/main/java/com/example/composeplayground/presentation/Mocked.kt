@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
-import com.example.composeplayground.domain.entities.Address
-import com.example.composeplayground.domain.entities.Company
-import com.example.composeplayground.domain.entities.Geo
-import com.example.composeplayground.domain.entities.User
+import com.example.composeplayground.domain.entities.user.Address
+import com.example.composeplayground.domain.entities.user.Company
+import com.example.composeplayground.domain.entities.user.Geo
+import com.example.composeplayground.domain.entities.user.User
 
 @Composable
 fun <T> T.asMockedState() =

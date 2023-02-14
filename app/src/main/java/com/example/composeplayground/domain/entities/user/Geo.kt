@@ -1,4 +1,4 @@
-package com.example.composeplayground.domain.entities
+package com.example.composeplayground.domain.entities.user
 
 import android.location.Location
 import kotlinx.serialization.SerialName

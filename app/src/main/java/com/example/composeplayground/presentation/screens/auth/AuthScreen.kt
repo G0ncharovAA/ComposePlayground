@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
-import com.example.composeplayground.domain.entities.User
+import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.nullAsMockedState
 import com.example.composeplayground.presentation.stringFromId

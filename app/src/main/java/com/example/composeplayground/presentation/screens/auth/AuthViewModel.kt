@@ -1,7 +1,7 @@
 package com.example.composeplayground.presentation.screens.auth
 
 import androidx.lifecycle.*
-import com.example.composeplayground.domain.entities.User
+import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.domain.interactors.UserInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class AuthViewModel @Inject constructor(
         get() = _authState
 
     val currentUser: LiveData<User?>
-        get() = userInteractor.currentUser
+        get() = userInteractor.currentUser.asLiveData()
 
     fun onUserSelected(user: User) {
         userInteractor.onUserSelected(user)

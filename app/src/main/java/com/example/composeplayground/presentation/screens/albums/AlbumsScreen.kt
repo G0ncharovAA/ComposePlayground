@@ -1,6 +1,8 @@
-package com.example.composeplayground.presentation.screens.home
+package com.example.composeplayground.presentation.screens.albums
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.appbar.AppBarComposable
 import com.example.composeplayground.presentation.appbar.AppBarItem
@@ -17,16 +20,16 @@ import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.NavTabBarComposable
 import com.example.composeplayground.presentation.navigation.TabBarItem
+import com.example.composeplayground.presentation.screens.albums.AlbumsViewModel
 import com.example.composeplayground.presentation.stringFromId
-import com.example.composeplayground.R
 
 @Composable
-fun HomeScreen(
+fun AlbumScreen(
     navController: NavController,
-    viewModel: HomeViewModel,
+    viewModel: AlbumsViewModel,
 ) {
     with(viewModel) {
-        HomeComposable(
+        AlbumsComposable(
             navController = navController,
             currentUser = currentUser.observeAsState()
         )
@@ -36,14 +39,14 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    HomeComposable(
+    AlbumsComposable(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
     )
 }
 
 @Composable
-fun HomeComposable(
+fun AlbumsComposable(
     navController: NavController,
     currentUser: State<User?>,
 ) {
@@ -63,7 +66,7 @@ fun HomeComposable(
         )
 
         Text(
-            text = "Home",
+            text = "Albums",
             modifier = Modifier.align(Alignment.Center),
         )
 
@@ -73,10 +76,10 @@ fun HomeComposable(
                 .align(Alignment.BottomCenter),
             navController = navController,
             navItems = listOf<TabBarItem>(
-                TabBarItem.Home(selected = true),
+                TabBarItem.Home(),
                 TabBarItem.ToDos(),
                 TabBarItem.Posts(),
-                TabBarItem.Albums(),
+                TabBarItem.Albums(selected = true),
             )
         )
     }
