@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
+import com.example.composeplayground.presentation.stringFromId
 
 sealed class AppBarItem {
 
@@ -46,6 +47,7 @@ fun AppBarComposable(
     modifier: Modifier,
     navController: NavController,
     appBarItems: List<AppBarItem>,
+    caption: String,
 ) {
     Box(
         modifier = modifier
@@ -63,6 +65,12 @@ fun AppBarComposable(
                     navController.navigateUp()
                 },
             tint = MaterialTheme.colors.onPrimary,
+        )
+        Text(
+            text = caption,
+            modifier = Modifier
+                .align(Alignment.Center),
+            color = MaterialTheme.colors.onPrimary
         )
         Row(
             modifier = Modifier.align(Alignment.CenterEnd)
@@ -84,6 +92,7 @@ fun DefaultPreview() {
             AppBarItem.UserItem(
                 userName = "Alice"
             )
-        )
+        ),
+        caption = "Home"
     )
 }

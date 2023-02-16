@@ -10,6 +10,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
@@ -50,30 +52,51 @@ fun AlbumsComposable(
     navController: NavController,
     currentUser: State<User?>,
 ) {
-    Box(
+    ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
     ) {
+
+        val (
+            appBar,
+            screenContent,
+            navTabBar,
+        ) = createRefs()
+
         AppBarComposable(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.TopCenter),
+                .constrainAs(appBar) {
+                    top.linkTo(parent.top)
+                },
             navController = navController,
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
                     currentUser.value?.userName ?: stringFromId(id = R.string.no_user_name)
                 )
-            )
+            ),
+            caption = stringFromId(id = R.string.albums)
         )
 
-        Text(
-            text = "Albums",
-            modifier = Modifier.align(Alignment.Center),
-        )
+        ConstraintLayout(
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(screenContent) {
+                    top.linkTo(appBar.bottom)
+                    bottom.linkTo(navTabBar.top)
+                    height = Dimension.fillToConstraints
+                }
+        ) {
+            Text(
+                text = "Albums",
+            )
+        }
 
         NavTabBarComposable(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter),
+                .constrainAs(navTabBar) {
+                    bottom.linkTo(parent.bottom)
+                },
             navController = navController,
             navItems = listOf<TabBarItem>(
                 TabBarItem.Home(),

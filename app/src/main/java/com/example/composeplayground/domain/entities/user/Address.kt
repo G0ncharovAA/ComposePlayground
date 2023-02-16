@@ -11,3 +11,5 @@ data class Address(
     @SerialName("zipcode") val zipcode: String,
     @SerialName("geo") val geo: Geo,
 )
+
+fun Address.concatinate() = "$city $street $suite"

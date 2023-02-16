@@ -16,4 +16,15 @@
     <string name="albums">Albums</string>
     <string name="navigate_back">Return backwards</string>
     <string name="no_user_name">No user name provided</string>
+    <string name="user_icon">User icon</string>
+    <string name="_aka">%s ака</string>
+    <string name="credentials">Credentials</string>
+    <string name="address_">Address: %s</string>
+    <string name="phone_">Phone: %s</string>
+    <string name="website_">Website: %s</string>
+    <string name="email_">Email: %s</string>
+    <string name="company">Company</string>
+    <string name="name_">Name: %s</string>
+    <string name="catch_phrase_">Catch phrase: %s</string>
+    <string name="bs_">bs: %s</string>
 </resources>
