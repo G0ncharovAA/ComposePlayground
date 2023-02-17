@@ -1,29 +1,30 @@
 package com.example.composeplayground.presentation.screens.albums
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
+import com.example.composeplayground.domain.entities.album.Photo
 import com.example.composeplayground.domain.entities.user.User
+import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBarComposable
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.asMockedState
-import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.NavTabBarComposable
 import com.example.composeplayground.presentation.navigation.TabBarItem
-import com.example.composeplayground.presentation.screens.albums.AlbumsViewModel
-import com.example.composeplayground.presentation.stringFromId
+import com.example.composeplayground.presentation.screens.albums.item.PhotoItemComposable
 
 @Composable
 fun AlbumScreen(
@@ -33,7 +34,8 @@ fun AlbumScreen(
     with(viewModel) {
         AlbumsComposable(
             navController = navController,
-            currentUser = currentUser.observeAsState()
+            currentUser = currentUser.observeAsState(),
+            albums = albums.observeAsState(emptyList()),
         )
     }
 }
@@ -44,6 +46,8 @@ fun DefaultPreview() {
     AlbumsComposable(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
+        albums = List(24) { mockedPhoto }
+            .asMockedState(),
     )
 }
 
@@ -51,6 +55,7 @@ fun DefaultPreview() {
 fun AlbumsComposable(
     navController: NavController,
     currentUser: State<User?>,
+    albums: State<List<Photo>>,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -60,6 +65,7 @@ fun AlbumsComposable(
             appBar,
             screenContent,
             navTabBar,
+            loading,
         ) = createRefs()
 
         AppBarComposable(
@@ -77,7 +83,8 @@ fun AlbumsComposable(
             caption = stringFromId(id = R.string.albums)
         )
 
-        ConstraintLayout(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(screenContent) {
@@ -86,8 +93,22 @@ fun AlbumsComposable(
                     height = Dimension.fillToConstraints
                 }
         ) {
-            Text(
-                text = "Albums",
+            items(albums.value) { photo ->
+                PhotoItemComposable(
+                    navController = navController,
+                    item = photo,
+                )
+            }
+        }
+
+        if (albums.value.isEmpty()) {
+            LinearProgressIndicator(
+                modifier = Modifier.constrainAs(loading) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
             )
         }
 

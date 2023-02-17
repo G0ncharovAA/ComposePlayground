@@ -24,6 +24,7 @@
     <string name="comment">Comment</string>
     <string name="comment_from_">Comment from: %s</string>
     <string name="albums">Albums</string>
+    <string name="photo">Photo</string>
     <string name="navigate_back">Return backwards</string>
     <string name="no_user_name">No user name provided</string>
     <string name="user_icon">User icon</string>

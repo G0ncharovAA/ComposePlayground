@@ -10,4 +10,6 @@ class AlbumsRepository @Inject constructor(
 ) {
 
     suspend fun getAlbums(userId: Int) = service.getAlbums(userId)
+
+    suspend fun getPhotos(albumId: Int) = service.getPhotos(albumId)
 }

@@ -15,6 +15,8 @@ import com.example.composeplayground.presentation.screens.auth.AuthScreen
 import com.example.composeplayground.presentation.screens.auth.AuthViewModel
 import com.example.composeplayground.presentation.screens.home.HomeScreen
 import com.example.composeplayground.presentation.screens.home.HomeViewModel
+import com.example.composeplayground.presentation.screens.photo.PhotoScreen
+import com.example.composeplayground.presentation.screens.photo.PhotoViewModel
 import com.example.composeplayground.presentation.screens.post.PostScreen
 import com.example.composeplayground.presentation.screens.post.PostViewModel
 import com.example.composeplayground.presentation.screens.posts.PostsScreen
@@ -70,6 +72,19 @@ fun NavigationMain() {
                 navController = navController,
                 viewModel = hiltViewModel<AlbumsViewModel>(it),
             )
+        }
+        composable(
+            route = "albums/{albumId}/{photoId}",
+            arguments = listOf(
+                navArgument("albumId") { type = NavType.IntType },
+                navArgument("photoId") { type = NavType.IntType },
+            )
+        ) {
+            PhotoScreen(
+                navController =navController,
+                albumId = it.arguments?.getInt("albumId") ?: 0,
+                photoId = it.arguments?.getInt("photoId") ?: 0,
+                viewModel = hiltViewModel<PhotoViewModel>(it))
         }
     }
 }
