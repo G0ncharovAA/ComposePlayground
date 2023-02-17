@@ -12,6 +12,9 @@
     <string name="enter">Enter</string>
     <string name="home">Home</string>
     <string name="todos">ToDos</string>
+    <string name="these_are_todos">These are things todo:</string>
+    <string name="title">Title:</string>
+    <string name="is_complete">Is complete</string>
     <string name="posts">Posts</string>
     <string name="albums">Albums</string>
     <string name="navigate_back">Return backwards</string>

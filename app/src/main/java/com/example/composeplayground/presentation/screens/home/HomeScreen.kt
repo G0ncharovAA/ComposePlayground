@@ -61,7 +61,8 @@ fun HomeComposable(
 
         val (
             appBar,
-            screenContent,
+            hero,
+            actions,
             navTabBar,
         ) = createRefs()
 
@@ -80,35 +81,31 @@ fun HomeComposable(
             caption = stringFromId(id = R.string.home)
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .constrainAs(screenContent) {
-                    top.linkTo(appBar.bottom)
-                    bottom.linkTo(navTabBar.top)
-                    height = Dimension.fillToConstraints
-                }
-        ) {
-            currentUser.value?.let {
-                HeroComposable(
-                    modifier = Modifier
-                        .padding(top = 64.dp)
-                        .align(Alignment.CenterHorizontally),
-                    user = it,
-                )
-            }
-            ActionsBlock(
+        currentUser.value?.let {
+            HeroComposable(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = 12.dp
-                    )
-                    .padding(top = 32.dp),
-                navController = navController,
-                actionItems = actionItemsDefault
+                    .padding(horizontal = 12.dp)
+                    .constrainAs(hero) {
+                        top.linkTo(appBar.bottom, margin = 64.dp)
+                    },
+                user = it,
             )
         }
+
+        ActionsBlock(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 12.dp
+                )
+                .constrainAs(actions) {
+                    top.linkTo(hero.bottom)
+                    bottom.linkTo(navTabBar.top)
+                },
+            navController = navController,
+            actionItems = actionItemsDefault
+        )
 
         NavTabBarComposable(
             modifier = Modifier

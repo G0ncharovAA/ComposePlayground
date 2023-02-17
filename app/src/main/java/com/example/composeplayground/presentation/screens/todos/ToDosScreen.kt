@@ -2,24 +2,32 @@ package com.example.composeplayground.presentation.screens.todos
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
+import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.appbar.AppBarComposable
 import com.example.composeplayground.presentation.appbar.AppBarItem
 import com.example.composeplayground.presentation.asMockedState
+import com.example.composeplayground.presentation.mockedToDo
 import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.NavTabBarComposable
 import com.example.composeplayground.presentation.navigation.TabBarItem
+import com.example.composeplayground.presentation.screens.todos.item.ToDoComposable
 import com.example.composeplayground.presentation.stringFromId
 
 @Composable
@@ -30,7 +38,8 @@ fun ToDosScreen(
     with(viewModel) {
         ToDosComposable(
             navController = navController,
-            currentUser = currentUser.observeAsState()
+            currentUser = currentUser.observeAsState(),
+            todos = todos.observeAsState(emptyList()),
         )
     }
 }
@@ -41,6 +50,8 @@ fun DefaultPreview() {
     ToDosComposable(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
+        todos = List(10) { mockedToDo }
+            .asMockedState(),
     )
 }
 
@@ -48,6 +59,7 @@ fun DefaultPreview() {
 fun ToDosComposable(
     navController: NavController,
     currentUser: State<User?>,
+    todos: State<List<ToDo>>,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -55,7 +67,8 @@ fun ToDosComposable(
 
         val (
             appBar,
-            screenContent,
+            header,
+            todoList,
             navTabBar,
         ) = createRefs()
 
@@ -74,18 +87,29 @@ fun ToDosComposable(
             caption = stringFromId(id = R.string.todos)
         )
 
-        ConstraintLayout(
+        Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(screenContent) {
+                .padding(12.dp)
+                .constrainAs(header) {
                     top.linkTo(appBar.bottom)
+                    start.linkTo(parent.start)
+                },
+            text = stringFromId(id = R.string.these_are_todos),
+            fontWeight = FontWeight.Bold,
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(12.dp)
+                .constrainAs(todoList) {
+                    top.linkTo(header.bottom)
                     bottom.linkTo(navTabBar.top)
                     height = Dimension.fillToConstraints
-                }
+                },
         ) {
-            Text(
-                text = "To do",
-            )
+            items(todos.value) { todo ->
+                ToDoComposable(todo)
+            }
         }
 
         NavTabBarComposable(

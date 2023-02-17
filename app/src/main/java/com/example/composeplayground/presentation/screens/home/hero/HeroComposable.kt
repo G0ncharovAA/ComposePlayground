@@ -25,8 +25,7 @@ fun HeroComposable(
     user: User,
 ) {
     Column(
-        modifier = modifier
-            .padding(6.dp),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
