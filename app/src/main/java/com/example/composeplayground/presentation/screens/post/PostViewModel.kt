@@ -33,6 +33,7 @@ class PostViewModel @Inject constructor(
 
     fun setPostId(postId: Int) {
         if (postId != _postId) {
+            _postId = postId
             viewModelScope.launch {
                 _post.update {
                     postsInteractor.getPost(postId)
