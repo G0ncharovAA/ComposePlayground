@@ -4,6 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
+import com.example.composeplayground.domain.entities.album.Album
+import com.example.composeplayground.domain.entities.album.Photo
+import com.example.composeplayground.domain.entities.post.Comment
+import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.domain.entities.user.Address
 import com.example.composeplayground.domain.entities.user.Company
@@ -48,4 +52,33 @@ val mockedToDo = ToDo(
     id = 0,
     title = "mocked Title",
     completed = true,
+)
+
+val mockedPost = Post(
+    userId = 0,
+    id = 0,
+    title = "mocked Title",
+    body = "mocked body",
+)
+
+val mockedComment = Comment(
+    postId = 0,
+    id = 0,
+    name = "Mocked Name",
+    email = "mocked@email",
+    body = "mocked body",
+)
+
+val mockedAlbum = Album(
+    userId = 0,
+    id = 0,
+    title = "mocked Title",
+)
+
+val mockedPhoto = Photo(
+    albumId = 0,
+    id = 0,
+    title = "mocked Title",
+    url = "https://via.placeholder.com/600/92c952",
+    thumbnailUrl = "https://via.placeholder.com/150/92c952"
 )

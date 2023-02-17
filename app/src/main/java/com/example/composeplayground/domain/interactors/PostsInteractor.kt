@@ -1,7 +1,6 @@
 package com.example.composeplayground.domain.interactors
 
 import com.example.composeplayground.data.repository.PostsRepository
-import com.example.composeplayground.data.repository.ToDoRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,4 +14,14 @@ class PostsInteractor @Inject constructor(
         userInteractor.doWithCurrentUser {
             postsRepository.getPosts(it.id)
         }
+
+    suspend fun getPost(id: Int) =
+        userInteractor.doWithCurrentUser {
+            postsRepository.getPosts(it.id).firstOrNull {
+                it.id == id
+            }
+        }
+
+    suspend fun getComments(postId: Int) =
+        postsRepository.getComments(postId)
 }

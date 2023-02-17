@@ -10,4 +10,6 @@ class PostsRepository @Inject constructor(
 ) {
 
     suspend fun getPosts(userId: Int) = service.getPosts(userId)
+
+    suspend fun getComments(postId: Int) = service.getComments(postId)
 }

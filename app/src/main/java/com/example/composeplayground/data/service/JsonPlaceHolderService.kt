@@ -1,6 +1,7 @@
 package com.example.composeplayground.data.service
 
 import com.example.composeplayground.domain.entities.album.Album
+import com.example.composeplayground.domain.entities.post.Comment
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.domain.entities.user.User
@@ -23,6 +24,9 @@ class JsonPlaceHolderService @Inject constructor(
 
     suspend fun getPosts(userId: Int): List<Post> =
         ktorClient.get("users/$userId/posts").body()
+
+    suspend fun getComments(postId: Int): List<Comment> =
+        ktorClient.get("posts/$postId/comments").body()
 
     suspend fun getAlbums(userId: Int): List<Album> =
         ktorClient.get("users/$userId/albums").body()

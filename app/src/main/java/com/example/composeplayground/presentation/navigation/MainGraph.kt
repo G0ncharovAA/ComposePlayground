@@ -4,15 +4,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.composeplayground.presentation.screens.albums.AlbumScreen
 import com.example.composeplayground.presentation.screens.albums.AlbumsViewModel
 import com.example.composeplayground.presentation.screens.auth.AuthScreen
 import com.example.composeplayground.presentation.screens.auth.AuthViewModel
 import com.example.composeplayground.presentation.screens.home.HomeScreen
 import com.example.composeplayground.presentation.screens.home.HomeViewModel
+import com.example.composeplayground.presentation.screens.post.PostScreen
+import com.example.composeplayground.presentation.screens.post.PostViewModel
 import com.example.composeplayground.presentation.screens.posts.PostsScreen
 import com.example.composeplayground.presentation.screens.posts.PostsViewModel
 import com.example.composeplayground.presentation.screens.todos.ToDosScreen
@@ -49,6 +53,16 @@ fun NavigationMain() {
             PostsScreen(
                 navController = navController,
                 viewModel = hiltViewModel<PostsViewModel>(it),
+            )
+        }
+        composable(
+            route = "posts/{postId}",
+            arguments = listOf(navArgument("postId") { type = NavType.IntType })
+        ) {
+            PostScreen(
+                navController = navController,
+                postId = it.arguments?.getInt("postId") ?: 0,
+                viewModel = hiltViewModel<PostViewModel>(it),
             )
         }
         composable("albums") {

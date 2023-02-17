@@ -1,8 +1,6 @@
 package com.example.composeplayground.presentation.screens.posts
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.domain.interactors.PostsInteractor
 import com.example.composeplayground.domain.interactors.UserInteractor
@@ -14,6 +12,10 @@ class PostsViewModel @Inject constructor(
     private val postsInteractor: PostsInteractor,
     private val userInteractor: UserInteractor,
 ) : ViewModel() {
+
+    val posts = liveData {
+        emit(postsInteractor.getPosts())
+    }
 
     val currentUser: LiveData<User?>
         get() = userInteractor.currentUser.asLiveData()

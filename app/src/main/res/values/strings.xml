@@ -16,6 +16,13 @@
     <string name="title">Title:</string>
     <string name="is_complete">Is complete</string>
     <string name="posts">Posts</string>
+    <string name="posts_from_">Posts from %s</string>
+    <string name="to_item_details">Go to details</string>
+    <string name="post">Post</string>
+    <string name="comments_for">Comments for the post of:</string>
+    <string name="comments">Comments:</string>
+    <string name="comment">Comment</string>
+    <string name="comment_from_">Comment from: %s</string>
     <string name="albums">Albums</string>
     <string name="navigate_back">Return backwards</string>
     <string name="no_user_name">No user name provided</string>

@@ -1,4 +1,4 @@
-package com.example.composeplayground.presentation.screens.posts
+package com.example.composeplayground.presentation.screens.post
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,25 +18,27 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
+import com.example.composeplayground.domain.entities.post.Comment
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBarComposable
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.navigation.NavTabBarComposable
-import com.example.composeplayground.presentation.navigation.TabBarItem
-import com.example.composeplayground.presentation.screens.posts.item.PostItemComposable
+import com.example.composeplayground.presentation.screens.post.comment.CommentComposable
 
 @Composable
-fun PostsScreen(
+fun PostScreen(
     navController: NavController,
-    viewModel: PostsViewModel,
+    postId: Int,
+    viewModel: PostViewModel,
 ) {
     with(viewModel) {
-        PostsComposable(
+        setPostId(postId)
+        PostComposable(
             navController = navController,
             currentUser = currentUser.observeAsState(),
-            posts = posts.observeAsState(initial = emptyList())
+            post = post.observeAsState(),
+            comments = comments.observeAsState(initial = emptyList())
         )
     }
 }
@@ -44,29 +46,31 @@ fun PostsScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    PostsComposable(
+    PostComposable(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
-        posts = List(10) { mockedPost }
+        post = mockedPost.asMockedState(),
+        comments = List(10) { mockedComment }
             .asMockedState(),
     )
 }
 
 @Composable
-fun PostsComposable(
+fun PostComposable(
     navController: NavController,
     currentUser: State<User?>,
-    posts: State<List<Post>>,
+    post: State<Post?>,
+    comments: State<List<Comment>>,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
     ) {
-
         val (
             appBar,
             header,
-            postsList,
-            navTabBar,
+            postTitle,
+            commentsHeader,
+            commentsWidget,
         ) = createRefs()
 
         AppBarComposable(
@@ -81,55 +85,52 @@ fun PostsComposable(
                     currentUser.value?.userName ?: stringFromId(id = R.string.no_user_name)
                 )
             ),
-            caption = stringFromId(id = R.string.posts)
+            caption = stringFromId(id = R.string.post)
         )
 
-        currentUser.value?.let {
+        Text(
+            modifier = Modifier.constrainAs(header) {
+                start.linkTo(parent.start, margin = 12.dp)
+                top.linkTo(appBar.bottom, margin = 64.dp)
+            },
+            text = stringFromId(id = R.string.comments_for)
+        )
+
+        post.value?.title?.let {
             Text(
                 modifier = Modifier
-                    .padding(12.dp)
-                    .constrainAs(header) {
-                        top.linkTo(appBar.bottom)
-                        start.linkTo(parent.start)
-                    },
-                text = stringFromId(
-                    id = R.string.posts_from_,
-                    arg = it.name,
-                ),
+                    .padding(horizontal = 12.dp)
+                    .constrainAs(postTitle) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(header.bottom, margin = 6.dp)
+                },
+                text = it,
                 fontWeight = FontWeight.Bold,
             )
         }
 
+        Text(
+            modifier = Modifier.constrainAs(commentsHeader) {
+                start.linkTo(parent.start, margin = 12.dp)
+                top.linkTo(postTitle.bottom, margin = 12.dp)
+            },
+            text = stringFromId(id = R.string.comments)
+        )
+
         LazyColumn(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(12.dp)
-                .constrainAs(postsList) {
-                    top.linkTo(header.bottom)
-                    bottom.linkTo(navTabBar.top)
+                .constrainAs(commentsWidget) {
+                    top.linkTo(commentsHeader.bottom, margin = 6.dp)
+                    bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 },
         ) {
-            items(posts.value) { post ->
-                PostItemComposable(
-                    navController = navController,
-                    item = post,
-                )
+            items(comments.value) { comment ->
+                CommentComposable(item = comment)
             }
         }
-
-        NavTabBarComposable(
-            modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(navTabBar) {
-                    bottom.linkTo(parent.bottom)
-                },
-            navController = navController,
-            navItems = listOf<TabBarItem>(
-                TabBarItem.Home(),
-                TabBarItem.ToDos(),
-                TabBarItem.Posts(selected = true),
-                TabBarItem.Albums(),
-            )
-        )
     }
 }
