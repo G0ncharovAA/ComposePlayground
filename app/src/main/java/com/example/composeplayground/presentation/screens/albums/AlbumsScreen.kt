@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -76,10 +77,10 @@ fun AlbumsComposable(
             navController = navController,
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringFromId(id = R.string.no_user_name)
+                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringFromId(id = R.string.albums)
+            caption = stringResource(id = R.string.albums)
         )
 
         LazyVerticalGrid(

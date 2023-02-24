@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.example.composeplayground.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +21,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.presentation.mockedToDo
-import com.example.composeplayground.presentation.stringFromId
 
 @Composable
 fun ToDoComposable(item: ToDo) {
@@ -46,7 +46,7 @@ fun ToDoComposable(item: ToDo) {
                     top.linkTo(parent.top, margin = 6.dp)
                     start.linkTo(parent.start, margin = 6.dp)
                 },
-            text = stringFromId(id = R.string.title),
+            text = stringResource(id = R.string.title),
             fontWeight = FontWeight.ExtraLight,
             fontSize = 12.sp,
         )
@@ -75,7 +75,7 @@ fun ToDoComposable(item: ToDo) {
             } else {
                 Icons.Default.Clear
             },
-            contentDescription = stringFromId(id = R.string.is_complete)
+            contentDescription = stringResource(id = R.string.is_complete)
         )
     }
 }

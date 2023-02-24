@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.presentation.mockedPost
-import com.example.composeplayground.presentation.stringFromId
 
 @Composable
 fun PostItemComposable(
@@ -55,7 +55,7 @@ fun PostItemComposable(
                     top.linkTo(parent.top, margin = 6.dp)
                     start.linkTo(parent.start, margin = 6.dp)
                 },
-            text = stringFromId(id = R.string.title),
+            text = stringResource(id = R.string.title),
             fontWeight = FontWeight.ExtraLight,
             fontSize = 12.sp,
         )
@@ -67,7 +67,7 @@ fun PostItemComposable(
                     end.linkTo(parent.end, margin = 6.dp)
                 },
             imageVector = Icons.Default.ArrowForward,
-            contentDescription = stringFromId(id = R.string.to_item_details),
+            contentDescription = stringResource(id = R.string.to_item_details),
         )
 
         Text(

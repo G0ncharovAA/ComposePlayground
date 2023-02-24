@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -88,10 +89,10 @@ fun PhotoComposable(
             navController = navController,
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringFromId(id = R.string.no_user_name)
+                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringFromId(id = R.string.photo)
+            caption = stringResource(id = R.string.photo)
         )
 
         photo.value?.let {

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,7 +18,6 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.domain.entities.user.concatinate
 import com.example.composeplayground.presentation.mockedUser
-import com.example.composeplayground.presentation.stringFromId
 
 @Composable
 fun HeroComposable(
@@ -37,12 +37,12 @@ fun HeroComposable(
         ) {
             Icon(
                 imageVector = Icons.Default.Face,
-                contentDescription = stringFromId(id = R.string.user_icon),
+                contentDescription = stringResource(id = R.string.user_icon),
                 modifier = Modifier.padding(end = 6.dp),
             )
             Column {
                 Text(
-                    text = stringFromId(id = R.string._aka, arg = user.name)
+                    text = stringResource(id = R.string._aka, user.name)
                 )
                 Text(
                     text = user.userName,
@@ -56,23 +56,23 @@ fun HeroComposable(
                     .padding(end = 3.dp)
                     .weight(1f)
             ) {
-                Text(text = stringFromId(id = R.string.credentials))
+                Text(text = stringResource(id = R.string.credentials))
                 Text(
-                    text = stringFromId(
+                    text = stringResource(
                         id = R.string.phone_,
-                        arg = user.phone
+                        user.phone
                     )
                 )
                 Text(
-                    text = stringFromId(
+                    text = stringResource(
                         id = R.string.website_,
-                        arg = user.website
+                        user.website
                     )
                 )
                 Text(
-                    text = stringFromId(
+                    text = stringResource(
                         id = R.string.email_,
-                        arg = user.email
+                        user.email
                     )
                 )
             }
@@ -81,31 +81,31 @@ fun HeroComposable(
                     .padding(start = 3.dp)
                     .weight(1f)
             ) {
-                Text(text = stringFromId(id = R.string.company))
+                Text(text = stringResource(id = R.string.company))
                 Text(
-                    text = stringFromId(
+                    text = stringResource(
                         id = R.string.name_,
-                        arg = user.company.name
+                        user.company.name
                     )
                 )
                 Text(
-                    text = stringFromId(
+                    text = stringResource(
                         id = R.string.catch_phrase_,
-                        arg = user.company.catchPhrase
+                        user.company.catchPhrase
                     )
                 )
                 Text(
-                    text = stringFromId(
+                    text = stringResource(
                         id = R.string.bs_,
-                        arg = user.company.bs
+                        user.company.bs
                     )
                 )
             }
         }
         Text(
-            text = stringFromId(
+            text = stringResource(
                 id = R.string.address_,
-                arg = user.address.concatinate(),
+                user.address.concatinate(),
             ),
             modifier = Modifier.align(Alignment.Start)
         )

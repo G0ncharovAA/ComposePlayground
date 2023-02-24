@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,10 +83,10 @@ fun PostComposable(
             navController = navController,
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringFromId(id = R.string.no_user_name)
+                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringFromId(id = R.string.post)
+            caption = stringResource(id = R.string.post)
         )
 
         Text(
@@ -93,7 +94,7 @@ fun PostComposable(
                 start.linkTo(parent.start, margin = 12.dp)
                 top.linkTo(appBar.bottom, margin = 64.dp)
             },
-            text = stringFromId(id = R.string.comments_for)
+            text = stringResource(id = R.string.comments_for)
         )
 
         post.value?.title?.let {
@@ -115,7 +116,7 @@ fun PostComposable(
                 start.linkTo(parent.start, margin = 12.dp)
                 top.linkTo(postTitle.bottom, margin = 12.dp)
             },
-            text = stringFromId(id = R.string.comments)
+            text = stringResource(id = R.string.comments)
         )
 
         LazyColumn(

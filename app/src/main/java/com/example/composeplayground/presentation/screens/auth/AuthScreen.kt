@@ -10,6 +10,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -18,7 +19,6 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.nullAsMockedState
-import com.example.composeplayground.presentation.stringFromId
 
 @Composable
 fun AuthScreen(
@@ -64,12 +64,12 @@ private fun AuthComposable(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringFromId(R.string.auth_state))
+        Text(text = stringResource(R.string.auth_state))
         Text(
             text = when (authState.value) {
                 is AuthState.UsersLoaded ->
-                    "${stringFromId(id = authState.value.stringId)}: ${users.value.size}"
-                else -> stringFromId(id = authState.value.stringId)
+                    "${stringResource(id = authState.value.stringId)}: ${users.value.size}"
+                else -> stringResource(id = authState.value.stringId)
             }
         )
         UsersDropDown(
@@ -85,7 +85,7 @@ private fun AuthComposable(
                     }
                 },
             ) {
-                Text(text = stringFromId(id = R.string.enter))
+                Text(text = stringResource(id = R.string.enter))
             }
         }
     }

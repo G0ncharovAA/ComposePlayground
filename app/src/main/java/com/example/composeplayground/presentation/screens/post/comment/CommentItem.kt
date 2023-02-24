@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,7 +18,6 @@ import androidx.constraintlayout.compose.Dimension
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.post.Comment
 import com.example.composeplayground.presentation.mockedComment
-import com.example.composeplayground.presentation.stringFromId
 
 @Composable
 fun CommentComposable(
@@ -42,9 +42,9 @@ fun CommentComposable(
                     start.linkTo(parent.start, margin = 6.dp)
                     width = Dimension.fillToConstraints
                 },
-            text = stringFromId(
+            text = stringResource(
                 id = R.string.comment_from_,
-                arg = item.name,
+                item.name,
             ),
             fontWeight = FontWeight.ExtraLight,
             fontSize = 12.sp,
@@ -57,7 +57,7 @@ fun CommentComposable(
                     end.linkTo(parent.end, margin = 6.dp)
                 },
             imageVector = Icons.Default.Info,
-            contentDescription = stringFromId(id = R.string.comments),
+            contentDescription = stringResource(id = R.string.comments),
         )
 
         Text(

@@ -9,6 +9,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -22,7 +23,6 @@ import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.NavTabBarComposable
 import com.example.composeplayground.presentation.navigation.TabBarItem
-import com.example.composeplayground.presentation.stringFromId
 import com.example.composeplayground.R
 import com.example.composeplayground.presentation.screens.home.action.ActionsBlock
 import com.example.composeplayground.presentation.screens.home.action.actionItemsDefault
@@ -75,10 +75,10 @@ fun HomeComposable(
             navController = navController,
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringFromId(id = R.string.no_user_name)
+                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringFromId(id = R.string.home)
+            caption = stringResource(id = R.string.home)
         )
 
         currentUser.value?.let {

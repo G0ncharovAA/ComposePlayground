@@ -15,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
-import com.example.composeplayground.presentation.stringFromId
 
 sealed class ActionItem {
 
@@ -51,15 +51,15 @@ sealed class ActionItem {
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = stringFromId(id = R.string.todos),
+                    contentDescription = stringResource(id = R.string.todos),
                     modifier = Modifier.padding(end = 6.dp),
                 )
                 Text(
-                    text = stringFromId(id = R.string.todos)
+                    text = stringResource(id = R.string.todos)
                 )
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = stringFromId(id = R.string.todos),
+                    contentDescription = stringResource(id = R.string.todos),
                     modifier = Modifier.padding(end = 6.dp),
                 )
             }
@@ -91,15 +91,15 @@ sealed class ActionItem {
             ) {
                 Icon(
                     imageVector = Icons.Default.Send,
-                    contentDescription = stringFromId(id = R.string.posts),
+                    contentDescription = stringResource(id = R.string.posts),
                     modifier = Modifier.padding(end = 6.dp),
                 )
                 Text(
-                    text = stringFromId(id = R.string.posts)
+                    text = stringResource(id = R.string.posts)
                 )
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = stringFromId(id = R.string.posts),
+                    contentDescription = stringResource(id = R.string.posts),
                     modifier = Modifier.padding(end = 6.dp),
                 )
             }
@@ -130,15 +130,15 @@ sealed class ActionItem {
             ) {
                 Icon(
                     imageVector = Icons.Default.Place,
-                    contentDescription = stringFromId(id = R.string.albums),
+                    contentDescription = stringResource(id = R.string.albums),
                     modifier = Modifier.padding(end = 6.dp),
                 )
                 Text(
-                    text = stringFromId(id = R.string.albums)
+                    text = stringResource(id = R.string.albums)
                 )
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
-                    contentDescription = stringFromId(id = R.string.albums),
+                    contentDescription = stringResource(id = R.string.albums),
                     modifier = Modifier.padding(end = 6.dp),
                 )
             }

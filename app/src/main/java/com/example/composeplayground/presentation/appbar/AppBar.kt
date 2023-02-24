@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
-import com.example.composeplayground.presentation.stringFromId
 
 sealed class AppBarItem {
 
