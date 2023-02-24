@@ -23,9 +23,9 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.album.Photo
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
-import com.example.composeplayground.presentation.appbar.AppBarComposable
+import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.screens.photo.item.ThumbPhotoItemComposable
+import com.example.composeplayground.presentation.screens.photo.item.ThumbPhotoItem
 
 @Composable
 fun PhotoScreen(
@@ -80,7 +80,7 @@ fun PhotoComposable(
             photosWidget,
         ) = createRefs()
 
-        AppBarComposable(
+        AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(appBar) {
@@ -128,7 +128,7 @@ fun PhotoComposable(
                 },
         ) {
             items(photos.value) { photo ->
-                ThumbPhotoItemComposable(
+                ThumbPhotoItem(
                     item = photo,
                     onClick = onPhotoClick,
                 )

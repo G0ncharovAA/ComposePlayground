@@ -13,7 +13,7 @@ import com.example.composeplayground.domain.entities.album.Photo
 import com.example.composeplayground.presentation.mockedPhoto
 
 @Composable
-fun PhotoItemComposable(
+fun PhotoItem(
     navController: NavController,
     item: Photo,
 ) {
@@ -32,7 +32,7 @@ fun PhotoItemComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    PhotoItemComposable(
+    PhotoItem(
         navController = rememberNavController(),
         item = mockedPhoto,
     )

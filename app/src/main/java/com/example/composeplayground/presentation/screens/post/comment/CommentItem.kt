@@ -20,7 +20,7 @@ import com.example.composeplayground.domain.entities.post.Comment
 import com.example.composeplayground.presentation.mockedComment
 
 @Composable
-fun CommentComposable(
+fun Comment(
     item: Comment,
 ) {
     ConstraintLayout(
@@ -77,5 +77,5 @@ fun CommentComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    CommentComposable(item = mockedComment)
+    Comment(item = mockedComment)
 }

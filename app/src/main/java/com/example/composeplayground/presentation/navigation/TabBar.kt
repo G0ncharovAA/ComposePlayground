@@ -123,7 +123,7 @@ sealed class TabBarItem {
 }
 
 @Composable
-fun NavTabBarComposable(
+fun NavTabBar(
     modifier: Modifier,
     navController: NavController,
     navItems: List<TabBarItem>,
@@ -142,7 +142,7 @@ fun NavTabBarComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    NavTabBarComposable(
+    NavTabBar(
         modifier = Modifier
             .fillMaxWidth(),
         navController = rememberNavController(),

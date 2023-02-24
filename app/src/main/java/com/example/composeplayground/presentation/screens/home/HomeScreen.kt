@@ -1,32 +1,27 @@
 package com.example.composeplayground.presentation.screens.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.domain.entities.user.User
-import com.example.composeplayground.presentation.appbar.AppBarComposable
+import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
 import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.mockedUser
-import com.example.composeplayground.presentation.navigation.NavTabBarComposable
+import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.R
 import com.example.composeplayground.presentation.screens.home.action.ActionsBlock
 import com.example.composeplayground.presentation.screens.home.action.actionItemsDefault
-import com.example.composeplayground.presentation.screens.home.hero.HeroComposable
+import com.example.composeplayground.presentation.screens.home.hero.Hero
 
 @Composable
 fun HomeScreen(
@@ -34,7 +29,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
 ) {
     with(viewModel) {
-        HomeComposable(
+        Home(
             navController = navController,
             currentUser = currentUser.observeAsState()
         )
@@ -44,14 +39,14 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    HomeComposable(
+    Home(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
     )
 }
 
 @Composable
-fun HomeComposable(
+fun Home(
     navController: NavController,
     currentUser: State<User?>,
 ) {
@@ -66,7 +61,7 @@ fun HomeComposable(
             navTabBar,
         ) = createRefs()
 
-        AppBarComposable(
+        AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(appBar) {
@@ -82,7 +77,7 @@ fun HomeComposable(
         )
 
         currentUser.value?.let {
-            HeroComposable(
+            Hero(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
@@ -107,7 +102,7 @@ fun HomeComposable(
             actionItems = actionItemsDefault
         )
 
-        NavTabBarComposable(
+        NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(navTabBar) {

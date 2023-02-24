@@ -20,11 +20,11 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.album.Photo
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
-import com.example.composeplayground.presentation.appbar.AppBarComposable
+import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.navigation.NavTabBarComposable
+import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.TabBarItem
-import com.example.composeplayground.presentation.screens.albums.item.PhotoItemComposable
+import com.example.composeplayground.presentation.screens.albums.item.PhotoItem
 
 @Composable
 fun AlbumScreen(
@@ -68,7 +68,7 @@ fun AlbumsComposable(
             loading,
         ) = createRefs()
 
-        AppBarComposable(
+        AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(appBar) {
@@ -94,7 +94,7 @@ fun AlbumsComposable(
                 }
         ) {
             items(albums.value) { photo ->
-                PhotoItemComposable(
+                PhotoItem(
                     navController = navController,
                     item = photo,
                 )
@@ -112,7 +112,7 @@ fun AlbumsComposable(
             )
         }
 
-        NavTabBarComposable(
+        NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(navTabBar) {

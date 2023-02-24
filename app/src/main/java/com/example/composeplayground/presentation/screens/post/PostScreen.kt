@@ -23,9 +23,9 @@ import com.example.composeplayground.domain.entities.post.Comment
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
-import com.example.composeplayground.presentation.appbar.AppBarComposable
+import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.screens.post.comment.CommentComposable
+import com.example.composeplayground.presentation.screens.post.comment.Comment
 
 @Composable
 fun PostScreen(
@@ -74,7 +74,7 @@ fun PostComposable(
             commentsWidget,
         ) = createRefs()
 
-        AppBarComposable(
+        AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(appBar) {
@@ -130,7 +130,7 @@ fun PostComposable(
                 },
         ) {
             items(comments.value) { comment ->
-                CommentComposable(item = comment)
+                Comment(item = comment)
             }
         }
     }

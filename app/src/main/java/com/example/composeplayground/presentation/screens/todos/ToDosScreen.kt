@@ -21,14 +21,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.domain.entities.user.User
-import com.example.composeplayground.presentation.appbar.AppBarComposable
+import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
 import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.mockedToDo
 import com.example.composeplayground.presentation.mockedUser
-import com.example.composeplayground.presentation.navigation.NavTabBarComposable
+import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.TabBarItem
-import com.example.composeplayground.presentation.screens.todos.item.ToDoComposable
+import com.example.composeplayground.presentation.screens.todos.item.ToDo
 
 @Composable
 fun ToDosScreen(
@@ -36,7 +36,7 @@ fun ToDosScreen(
     viewModel: ToDosViewModel,
 ) {
     with(viewModel) {
-        ToDosComposable(
+        ToDos(
             navController = navController,
             currentUser = currentUser.observeAsState(),
             todos = todos.observeAsState(emptyList()),
@@ -47,7 +47,7 @@ fun ToDosScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ToDosComposable(
+    ToDos(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
         todos = List(10) { mockedToDo }
@@ -56,7 +56,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun ToDosComposable(
+fun ToDos(
     navController: NavController,
     currentUser: State<User?>,
     todos: State<List<ToDo>>,
@@ -72,7 +72,7 @@ fun ToDosComposable(
             navTabBar,
         ) = createRefs()
 
-        AppBarComposable(
+        AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(appBar) {
@@ -108,11 +108,11 @@ fun ToDosComposable(
                 },
         ) {
             items(todos.value) { todo ->
-                ToDoComposable(todo)
+                ToDo(todo)
             }
         }
 
-        NavTabBarComposable(
+        NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(navTabBar) {

@@ -26,7 +26,7 @@ fun AuthScreen(
     viewModel: AuthViewModel,
 ) {
     with(viewModel) {
-        AuthComposable(
+        Auth(
             // Default values of the states
             navController = navController,
             authState = authState.observeAsState(AuthState.SignedOut),
@@ -40,7 +40,7 @@ fun AuthScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AuthComposable(
+    Auth(
         navController = rememberNavController(),
         authState = AuthState.SignedIn.asMockedState(),
         users = emptyList<User>().asMockedState(),
@@ -50,7 +50,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-private fun AuthComposable(
+private fun Auth(
     navController: NavController,
     authState: State<AuthState>,
     users: State<List<User>>,

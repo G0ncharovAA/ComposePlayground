@@ -23,7 +23,7 @@ import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.presentation.mockedToDo
 
 @Composable
-fun ToDoComposable(item: ToDo) {
+fun ToDo(item: ToDo) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,5 +83,5 @@ fun ToDoComposable(item: ToDo) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ToDoComposable(item = mockedToDo)
+    ToDo(item = mockedToDo)
 }

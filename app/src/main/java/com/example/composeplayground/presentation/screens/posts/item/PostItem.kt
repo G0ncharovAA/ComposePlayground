@@ -25,7 +25,7 @@ import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.presentation.mockedPost
 
 @Composable
-fun PostItemComposable(
+fun PostItem(
     navController: NavController,
     item: Post,
 ) {
@@ -99,7 +99,7 @@ fun PostItemComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    PostItemComposable(
+    PostItem(
         navController = rememberNavController(),
         item = mockedPost,
     )

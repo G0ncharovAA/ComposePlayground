@@ -20,7 +20,7 @@ import com.example.composeplayground.domain.entities.user.concatinate
 import com.example.composeplayground.presentation.mockedUser
 
 @Composable
-fun HeroComposable(
+fun Hero(
     modifier: Modifier,
     user: User,
 ) {
@@ -115,7 +115,7 @@ fun HeroComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    HeroComposable(
+    Hero(
         modifier = Modifier,
         user = mockedUser,
     )

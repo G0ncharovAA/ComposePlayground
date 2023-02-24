@@ -22,11 +22,11 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
-import com.example.composeplayground.presentation.appbar.AppBarComposable
+import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.navigation.NavTabBarComposable
+import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.TabBarItem
-import com.example.composeplayground.presentation.screens.posts.item.PostItemComposable
+import com.example.composeplayground.presentation.screens.posts.item.PostItem
 
 @Composable
 fun PostsScreen(
@@ -34,7 +34,7 @@ fun PostsScreen(
     viewModel: PostsViewModel,
 ) {
     with(viewModel) {
-        PostsComposable(
+        Posts(
             navController = navController,
             currentUser = currentUser.observeAsState(),
             posts = posts.observeAsState(initial = emptyList())
@@ -45,7 +45,7 @@ fun PostsScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    PostsComposable(
+    Posts(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
         posts = List(10) { mockedPost }
@@ -54,7 +54,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun PostsComposable(
+fun Posts(
     navController: NavController,
     currentUser: State<User?>,
     posts: State<List<Post>>,
@@ -70,7 +70,7 @@ fun PostsComposable(
             navTabBar,
         ) = createRefs()
 
-        AppBarComposable(
+        AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(appBar) {
@@ -111,14 +111,14 @@ fun PostsComposable(
                 },
         ) {
             items(posts.value) { post ->
-                PostItemComposable(
+                PostItem(
                     navController = navController,
                     item = post,
                 )
             }
         }
 
-        NavTabBarComposable(
+        NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(navTabBar) {

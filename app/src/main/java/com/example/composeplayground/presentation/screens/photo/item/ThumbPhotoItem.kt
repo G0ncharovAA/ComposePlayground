@@ -11,7 +11,7 @@ import com.example.composeplayground.domain.entities.album.Photo
 import com.example.composeplayground.presentation.mockedPhoto
 
 @Composable
-fun ThumbPhotoItemComposable(
+fun ThumbPhotoItem(
     item: Photo,
     onClick: (Int) -> Unit,
 ) {
@@ -28,7 +28,7 @@ fun ThumbPhotoItemComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ThumbPhotoItemComposable(
+    ThumbPhotoItem(
         item = mockedPhoto,
         onClick = {},
     )

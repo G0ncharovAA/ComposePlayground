@@ -42,7 +42,7 @@ sealed class AppBarItem {
 }
 
 @Composable
-fun AppBarComposable(
+fun AppBar(
     modifier: Modifier,
     navController: NavController,
     appBarItems: List<AppBarItem>,
@@ -84,7 +84,7 @@ fun AppBarComposable(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AppBarComposable(
+    AppBar(
         modifier = Modifier.fillMaxWidth(),
         navController = rememberNavController(),
         appBarItems = listOf<AppBarItem>(
