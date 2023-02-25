@@ -35,7 +35,7 @@ fun PostScreen(
 ) {
     with(viewModel) {
         setPostId(postId)
-        PostComposable(
+        Post(
             navController = navController,
             currentUser = currentUser.observeAsState(),
             post = post.observeAsState(),
@@ -46,8 +46,8 @@ fun PostScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    PostComposable(
+private fun PostPreview() {
+    Post(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
         post = mockedPost.asMockedState(),
@@ -57,7 +57,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun PostComposable(
+fun Post(
     navController: NavController,
     currentUser: State<User?>,
     post: State<Post?>,

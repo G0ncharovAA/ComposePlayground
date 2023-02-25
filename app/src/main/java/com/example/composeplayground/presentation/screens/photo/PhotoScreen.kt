@@ -39,7 +39,7 @@ fun PhotoScreen(
             albumId = albumId,
             photoId = photoId,
         )
-        PhotoComposable(
+        Photo(
             navController = navController,
             currentUser = currentUser.observeAsState(),
             photo = photo.observeAsState(),
@@ -51,8 +51,8 @@ fun PhotoScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    PhotoComposable(
+private fun PhotoPreview() {
+    Photo(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
         photo = mockedPhoto.asMockedState(),
@@ -63,7 +63,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun PhotoComposable(
+fun Photo(
     navController: NavController,
     currentUser: State<User?>,
     photo: State<Photo?>,

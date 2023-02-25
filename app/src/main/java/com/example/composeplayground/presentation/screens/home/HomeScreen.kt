@@ -38,7 +38,7 @@ fun HomeScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun HomePreview() {
     Home(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),

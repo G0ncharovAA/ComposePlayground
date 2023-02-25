@@ -46,7 +46,7 @@ fun ToDosScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun ToDosPreview() {
     ToDos(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),

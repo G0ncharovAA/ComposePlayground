@@ -31,7 +31,7 @@ fun PhotoItem(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun PhotoItemPreview() {
     PhotoItem(
         navController = rememberNavController(),
         item = mockedPhoto,

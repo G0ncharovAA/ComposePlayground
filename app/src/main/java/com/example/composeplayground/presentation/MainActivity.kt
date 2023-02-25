@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun MainActivityPreview() {
     ComposeContent()
 }
 

@@ -32,7 +32,7 @@ fun AlbumScreen(
     viewModel: AlbumsViewModel,
 ) {
     with(viewModel) {
-        AlbumsComposable(
+        Albums(
             navController = navController,
             currentUser = currentUser.observeAsState(),
             albums = albums.observeAsState(emptyList()),
@@ -42,8 +42,8 @@ fun AlbumScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    AlbumsComposable(
+private fun AlbumsPreview() {
+    Albums(
         navController = rememberNavController(),
         currentUser = mockedUser.asMockedState(),
         albums = List(24) { mockedPhoto }
@@ -52,7 +52,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun AlbumsComposable(
+fun Albums(
     navController: NavController,
     currentUser: State<User?>,
     albums: State<List<Photo>>,

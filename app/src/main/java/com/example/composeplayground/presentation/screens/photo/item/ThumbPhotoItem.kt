@@ -27,7 +27,7 @@ fun ThumbPhotoItem(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun ThumbPhotoPreview() {
     ThumbPhotoItem(
         item = mockedPhoto,
         onClick = {},

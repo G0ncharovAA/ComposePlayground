@@ -167,7 +167,7 @@ fun ActionsBlock(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun ActionsBlockPreview() {
     ActionsBlock(
         modifier = Modifier.padding(12.dp),
         navController = rememberNavController(),

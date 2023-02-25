@@ -141,7 +141,7 @@ fun NavTabBar(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun NavTabBarPreview() {
     NavTabBar(
         modifier = Modifier
             .fillMaxWidth(),

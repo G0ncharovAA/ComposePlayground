@@ -83,7 +83,7 @@ fun AppBar(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun AppBarPreview() {
     AppBar(
         modifier = Modifier.fillMaxWidth(),
         navController = rememberNavController(),

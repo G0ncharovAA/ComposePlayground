@@ -114,7 +114,7 @@ fun Hero(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun HeroPreview() {
     Hero(
         modifier = Modifier,
         user = mockedUser,

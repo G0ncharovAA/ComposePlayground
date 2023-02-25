@@ -39,7 +39,7 @@ fun AuthScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+private fun AuthPreview() {
     Auth(
         navController = rememberNavController(),
         authState = AuthState.SignedIn.asMockedState(),
