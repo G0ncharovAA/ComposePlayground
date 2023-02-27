@@ -43,7 +43,7 @@ sealed class AppBarItem {
 
 @Composable
 fun AppBar(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     navController: NavController,
     appBarItems: List<AppBarItem>,
     caption: String,

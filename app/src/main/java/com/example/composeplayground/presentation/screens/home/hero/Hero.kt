@@ -21,7 +21,7 @@ import com.example.composeplayground.presentation.mockedUser
 
 @Composable
 fun Hero(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     user: User,
 ) {
     Column(

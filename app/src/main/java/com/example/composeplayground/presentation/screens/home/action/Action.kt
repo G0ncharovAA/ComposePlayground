@@ -154,7 +154,7 @@ val actionItemsDefault = listOf<ActionItem>(
 
 @Composable
 fun ActionsBlock(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     navController: NavController,
     actionItems: List<ActionItem>,
 ) {

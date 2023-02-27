@@ -124,7 +124,7 @@ sealed class TabBarItem {
 
 @Composable
 fun NavTabBar(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     navController: NavController,
     navItems: List<TabBarItem>,
 ) {
