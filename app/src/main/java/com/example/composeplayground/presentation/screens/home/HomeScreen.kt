@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.domain.entities.user.User
@@ -50,23 +49,13 @@ fun Home(
     navController: NavController,
     currentUser: State<User?>,
 ) {
-    ConstraintLayout(
+    Column(
         modifier = Modifier.fillMaxSize(),
     ) {
 
-        val (
-            appBar,
-            hero,
-            actions,
-            navTabBar,
-        ) = createRefs()
-
         AppBar(
             modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(appBar) {
-                    top.linkTo(parent.top)
-                },
+                .fillMaxWidth(),
             navController = navController,
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
@@ -80,10 +69,8 @@ fun Home(
             Hero(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
-                    .constrainAs(hero) {
-                        top.linkTo(appBar.bottom, margin = 64.dp)
-                    },
+                    .padding(top = 64.dp)
+                    .padding(horizontal = 12.dp),
                 user = it,
             )
         }
@@ -91,23 +78,16 @@ fun Home(
         ActionsBlock(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 12.dp
-                )
-                .constrainAs(actions) {
-                    top.linkTo(hero.bottom)
-                    bottom.linkTo(navTabBar.top)
-                },
+                .weight(1.0f)
+                .padding(top = 64.dp)
+                .padding(horizontal = 12.dp),
             navController = navController,
             actionItems = actionItemsDefault
         )
 
         NavTabBar(
             modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(navTabBar) {
-                    bottom.linkTo(parent.bottom)
-                },
+                .fillMaxWidth(),
             navController = navController,
             navItems = listOf<TabBarItem>(
                 TabBarItem.Home(selected = true),
