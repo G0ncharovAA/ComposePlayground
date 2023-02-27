@@ -53,16 +53,16 @@ fun AppBar(
             .background(MaterialTheme.colors.primaryVariant)
     ) {
         Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = LocalContext.current.getString(
-                R.string.navigate_back
-            ),
             modifier = Modifier
                 .padding(start = 6.dp)
                 .align(Alignment.CenterStart)
                 .clickable {
                     navController.navigateUp()
                 },
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = LocalContext.current.getString(
+                R.string.navigate_back
+            ),
             tint = MaterialTheme.colors.onPrimary,
         )
         Text(

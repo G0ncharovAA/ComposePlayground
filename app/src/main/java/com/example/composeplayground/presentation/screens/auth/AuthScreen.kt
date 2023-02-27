@@ -32,7 +32,7 @@ fun AuthScreen(
             authState = authState.observeAsState(AuthState.SignedOut),
             users = users.observeAsState(initial = emptyList()),
             currentUser = currentUser.observeAsState(),
-            onUserClicked = ::onUserSelected,
+            onUserClick = ::onUserSelected,
         )
     }
 }
@@ -45,7 +45,7 @@ private fun AuthPreview() {
         authState = AuthState.SignedIn.asMockedState(),
         users = emptyList<User>().asMockedState(),
         currentUser = nullAsMockedState(),
-        onUserClicked = {},
+        onUserClick = {},
     )
 }
 
@@ -55,7 +55,7 @@ private fun Auth(
     authState: State<AuthState>,
     users: State<List<User>>,
     currentUser: State<User?>,
-    onUserClicked: (User) -> Unit,
+    onUserClick: (User) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -75,7 +75,7 @@ private fun Auth(
         UsersDropDown(
             users = users,
             selectedUser = currentUser,
-            onUserClicked = onUserClicked,
+            onUserClicked = onUserClick,
         )
         if (authState.value == AuthState.SignedIn) {
             Button(
