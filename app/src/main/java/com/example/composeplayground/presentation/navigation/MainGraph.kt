@@ -24,41 +24,51 @@ import com.example.composeplayground.presentation.screens.posts.PostsViewModel
 import com.example.composeplayground.presentation.screens.todos.ToDosScreen
 import com.example.composeplayground.presentation.screens.todos.ToDosViewModel
 
+sealed class Destinations(val route: String) {
+    object AuthScreen : Destinations("auth")
+    object HomeScreen : Destinations("home")
+    object ToDosScreen : Destinations("todos")
+    object PostsScreen : Destinations("posts")
+    object PostScreen : Destinations("posts/{postId}")
+    object AlbumsScreen : Destinations("albums")
+    object PhotoScreen : Destinations("albums/{albumId}/{photoId}")
+}
+
 @Composable
 fun NavigationMain() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = "auth",
+        startDestination = Destinations.AuthScreen.route,
         modifier = Modifier.fillMaxSize(),
     ) {
-        composable("auth") {
+        composable(Destinations.AuthScreen.route) {
             AuthScreen(
                 navController = navController,
                 viewModel = hiltViewModel<AuthViewModel>(it),
             )
         }
-        composable("home") {
+        composable(Destinations.HomeScreen.route) {
             HomeScreen(
                 navController = navController,
                 viewModel = hiltViewModel<HomeViewModel>(it),
             )
         }
-        composable("todos") {
+        composable(Destinations.ToDosScreen.route) {
             ToDosScreen(
                 navController = navController,
                 viewModel = hiltViewModel<ToDosViewModel>(it),
             )
         }
-        composable("posts") {
+        composable(Destinations.PostsScreen.route) {
             PostsScreen(
                 navController = navController,
                 viewModel = hiltViewModel<PostsViewModel>(it),
             )
         }
         composable(
-            route = "posts/{postId}",
+            route = Destinations.PostScreen.route,
             arguments = listOf(navArgument("postId") { type = NavType.IntType })
         ) {
             PostScreen(
@@ -67,24 +77,25 @@ fun NavigationMain() {
                 viewModel = hiltViewModel<PostViewModel>(it),
             )
         }
-        composable("albums") {
+        composable(Destinations.AlbumsScreen.route) {
             AlbumScreen(
                 navController = navController,
                 viewModel = hiltViewModel<AlbumsViewModel>(it),
             )
         }
         composable(
-            route = "albums/{albumId}/{photoId}",
+            route = Destinations.PhotoScreen.route,
             arguments = listOf(
                 navArgument("albumId") { type = NavType.IntType },
                 navArgument("photoId") { type = NavType.IntType },
             )
         ) {
             PhotoScreen(
-                navController =navController,
+                navController = navController,
                 albumId = it.arguments?.getInt("albumId") ?: 0,
                 photoId = it.arguments?.getInt("photoId") ?: 0,
-                viewModel = hiltViewModel<PhotoViewModel>(it))
+                viewModel = hiltViewModel<PhotoViewModel>(it)
+            )
         }
     }
 }

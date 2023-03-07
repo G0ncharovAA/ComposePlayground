@@ -57,7 +57,7 @@ fun AppBar(
                 .padding(start = 6.dp)
                 .align(Alignment.CenterStart)
                 .clickable {
-                    navController.navigateUp()
+                    navController.popBackStack()
                 },
             imageVector = Icons.Default.ArrowBack,
             contentDescription = LocalContext.current.getString(

@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.asMockedState
+import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.nullAsMockedState
 
 @Composable
@@ -67,8 +68,10 @@ private fun Auth(
         Text(text = stringResource(R.string.auth_state))
         Text(
             text = when (authState.value) {
-                is AuthState.UsersLoaded ->
-                    "${stringResource(id = authState.value.stringId)}: ${users.value.size}"
+                is AuthState.UsersLoaded -> stringResource(
+                    id = R.string.users_loaded_,
+                    users.value.size,
+                )
                 else -> stringResource(id = authState.value.stringId)
             }
         )
@@ -80,8 +83,8 @@ private fun Auth(
         if (authState.value == AuthState.SignedIn) {
             Button(
                 onClick = {
-                    navController.navigate("home") {
-                        popUpTo("auth") { inclusive = true }
+                    navController.navigate(Destinations.HomeScreen.route) {
+                        popUpTo(Destinations.AuthScreen.route) { inclusive = true }
                     }
                 },
             ) {

@@ -1,5 +1,6 @@
 package com.example.composeplayground.presentation.screens.home.action
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
+import com.example.composeplayground.presentation.navigation.Destinations
 
 sealed class ActionItem {
 
@@ -35,7 +37,7 @@ sealed class ActionItem {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate("todos") {
+                        navController.navigate(Destinations.ToDosScreen.route) {
                             launchSingleTop = true
                         }
                     }
@@ -75,7 +77,7 @@ sealed class ActionItem {
                     .fillMaxWidth()
                     .padding(vertical = 9.dp)
                     .clickable {
-                        navController.navigate("posts") {
+                        navController.navigate(Destinations.PostsScreen.route) {
                             launchSingleTop = true
                         }
                     }
@@ -114,7 +116,7 @@ sealed class ActionItem {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate("albums") {
+                        navController.navigate(Destinations.AlbumsScreen.route) {
                             launchSingleTop = true
                         }
                     }

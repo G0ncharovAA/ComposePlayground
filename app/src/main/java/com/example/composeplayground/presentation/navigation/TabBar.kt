@@ -30,7 +30,7 @@ sealed class TabBarItem {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate("home") {
+                        navController.navigate(Destinations.HomeScreen.route) {
                             launchSingleTop = true
                         }
                     }
@@ -56,7 +56,7 @@ sealed class TabBarItem {
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .clickable {
-                            navController.navigate("todos") {
+                            navController.navigate(Destinations.ToDosScreen.route) {
                                 launchSingleTop = true
                             }
                         }
@@ -85,7 +85,7 @@ sealed class TabBarItem {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate("posts") {
+                        navController.navigate(Destinations.PostsScreen.route) {
                             launchSingleTop = true
                         }
                     }
@@ -107,7 +107,7 @@ sealed class TabBarItem {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate("albums") {
+                        navController.navigate(Destinations.AlbumsScreen.route) {
                             launchSingleTop = true
                         }
                     }

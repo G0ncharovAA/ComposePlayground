@@ -38,4 +38,6 @@
     <string name="name_">Name: %s</string>
     <string name="catch_phrase_">Catch phrase: %s</string>
     <string name="bs_">bs: %s</string>
+    <string name="colon_">%s: %s</string>
+    <string name="users_loaded_">Users loaded: %1$d</string>
 </resources>
