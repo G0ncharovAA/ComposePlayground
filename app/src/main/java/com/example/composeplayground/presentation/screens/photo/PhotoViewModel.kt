@@ -13,11 +13,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val albumsInteractor: AlbumsInteractor,
     private val userInteractor: UserInteractor,
 ) : ViewModel() {
 
-    private var _albumId = 0
+    private var _albumId = savedStateHandle.get<Int>("albumId") ?: 0
+    private var _photoId = savedStateHandle.get<Int>("photoId") ?: 0
+
+    init {
+        viewModelScope.launch {
+            val photos = albumsInteractor.getPhotos(_albumId)
+            _photo.update {
+                photos.firstOrNull {
+                    it.id == _photoId
+                }
+            }
+            _photos.update {
+                photos
+            }
+        }
+    }
 
     private val _photo = MutableStateFlow<Photo?>(null)
     val photo: LiveData<Photo?>
@@ -27,28 +43,8 @@ class PhotoViewModel @Inject constructor(
     val photos: LiveData<List<Photo>>
         get() = _photos.asLiveData()
 
-    val currentUser: LiveData<User?>
-        get() = userInteractor.currentUser.asLiveData()
-
-    fun setAlbumAndPhoto(
-        albumId: Int,
-        photoId: Int,
-    ) {
-        if (albumId != _albumId) {
-            _albumId = albumId
-            viewModelScope.launch {
-                val photos = albumsInteractor.getPhotos(albumId)
-                _photo.update {
-                    photos.firstOrNull {
-                        it.id == photoId
-                    }
-                }
-                _photos.update {
-                    photos
-                }
-            }
-        }
-    }
+    val currentUser
+        get() = userInteractor.currentUser
 
     fun onPhotoClick(photoId: Int) {
         _photo.update {

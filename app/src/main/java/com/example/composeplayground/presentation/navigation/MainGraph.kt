@@ -73,7 +73,6 @@ fun NavigationMain() {
         ) {
             PostScreen(
                 navController = navController,
-                postId = it.arguments?.getInt("postId") ?: 0,
                 viewModel = hiltViewModel<PostViewModel>(it),
             )
         }
@@ -92,9 +91,7 @@ fun NavigationMain() {
         ) {
             PhotoScreen(
                 navController = navController,
-                albumId = it.arguments?.getInt("albumId") ?: 0,
-                photoId = it.arguments?.getInt("photoId") ?: 0,
-                viewModel = hiltViewModel<PhotoViewModel>(it)
+                viewModel = hiltViewModel<PhotoViewModel>(it),
             )
         }
     }

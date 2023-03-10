@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,18 +31,12 @@ import com.example.composeplayground.presentation.screens.photo.item.ThumbPhotoI
 @Composable
 fun PhotoScreen(
     navController: NavController,
-    albumId: Int,
-    photoId: Int,
     viewModel: PhotoViewModel,
 ) {
     with(viewModel) {
-        setAlbumAndPhoto(
-            albumId = albumId,
-            photoId = photoId,
-        )
         Photo(
             navController = navController,
-            currentUser = currentUser.observeAsState(),
+            currentUser = currentUser.collectAsState(),
             photo = photo.observeAsState(),
             photos = photos.observeAsState(initial = emptyList()),
             onPhotoClick = ::onPhotoClick

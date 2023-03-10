@@ -30,11 +30,9 @@ import com.example.composeplayground.presentation.screens.post.comment.Comment
 @Composable
 fun PostScreen(
     navController: NavController,
-    postId: Int,
     viewModel: PostViewModel,
 ) {
     with(viewModel) {
-        setPostId(postId)
         Post(
             navController = navController,
             currentUser = currentUser.observeAsState(),

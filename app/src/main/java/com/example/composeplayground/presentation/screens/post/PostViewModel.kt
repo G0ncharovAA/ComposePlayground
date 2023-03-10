@@ -14,11 +14,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val postsInteractor: PostsInteractor,
     private val userInteractor: UserInteractor,
 ) : ViewModel() {
 
-    private var _postId = 0
+    private var _postId = savedStateHandle.get<Int>("postId") ?: 0
+
+    init {
+        viewModelScope.launch {
+            _post.update {
+                postsInteractor.getPost(_postId)
+            }
+            _comments.update {
+                postsInteractor.getComments(_postId)
+            }
+        }
+    }
 
     private val _post = MutableStateFlow<Post?>(null)
     val post: LiveData<Post?>
@@ -30,18 +42,4 @@ class PostViewModel @Inject constructor(
 
     val currentUser: LiveData<User?>
         get() = userInteractor.currentUser.asLiveData()
-
-    fun setPostId(postId: Int) {
-        if (postId != _postId) {
-            _postId = postId
-            viewModelScope.launch {
-                _post.update {
-                    postsInteractor.getPost(postId)
-                }
-                _comments.update {
-                    postsInteractor.getComments(postId)
-                }
-            }
-        }
-    }
 }
