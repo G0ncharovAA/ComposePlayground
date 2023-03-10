@@ -6,7 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +18,9 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.navigation.Destinations
-import com.example.composeplayground.presentation.nullAsMockedState
+import com.example.composeplayground.presentation.screens.auth.intention.AuthScreenIntention
+import com.example.composeplayground.presentation.screens.auth.state.AuthScreenState
+import com.example.composeplayground.presentation.screens.auth.state.AuthState
 
 @Composable
 fun AuthScreen(
@@ -30,10 +31,8 @@ fun AuthScreen(
         Auth(
             // Default values of the states
             navController = navController,
-            authState = authState.observeAsState(AuthState.SignedOut),
-            users = users.observeAsState(initial = emptyList()),
-            currentUser = currentUser.observeAsState(),
-            onUserClick = ::onUserSelected,
+            authScreenState = viewModel.viewState.collectAsState(),
+            intentionsDispatcher = viewModel::dispatchIntention,
         )
     }
 }
@@ -43,20 +42,16 @@ fun AuthScreen(
 private fun AuthPreview() {
     Auth(
         navController = rememberNavController(),
-        authState = AuthState.SignedIn.asMockedState(),
-        users = emptyList<User>().asMockedState(),
-        currentUser = nullAsMockedState(),
-        onUserClick = {},
+        authScreenState = AuthScreenState().asMockedState(),
+        intentionsDispatcher = {},
     )
 }
 
 @Composable
 private fun Auth(
     navController: NavController,
-    authState: State<AuthState>,
-    users: State<List<User>>,
-    currentUser: State<User?>,
-    onUserClick: (User) -> Unit,
+    authScreenState: State<AuthScreenState>,
+    intentionsDispatcher: (AuthScreenIntention) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -67,20 +62,21 @@ private fun Auth(
     ) {
         Text(text = stringResource(R.string.auth_state))
         Text(
-            text = when (authState.value) {
+            text = when (authScreenState.value.authState) {
                 is AuthState.UsersLoaded -> stringResource(
                     id = R.string.users_loaded_,
-                    users.value.size,
+                    authScreenState.value.users.size,
                 )
-                else -> stringResource(id = authState.value.stringId)
+                else -> stringResource(id = authScreenState.value.authState.stringId)
             }
         )
         UsersDropDown(
-            users = users,
-            selectedUser = currentUser,
-            onUserClicked = onUserClick,
+            users = authScreenState.value.users,
+            selectedUser = authScreenState.value.currentUser,
+            expanded = authScreenState.value.dropDownExpanded,
+            intentionsDispatcher = intentionsDispatcher,
         )
-        if (authState.value == AuthState.SignedIn) {
+        if (authScreenState.value.authState == AuthState.SignedIn) {
             Button(
                 onClick = {
                     navController.navigate(Destinations.HomeScreen.route) {
@@ -96,23 +92,25 @@ private fun Auth(
 
 @Composable
 private fun UsersDropDown(
-    users: State<List<User>>,
-    selectedUser: State<User?>,
-    onUserClicked: (User) -> Unit,
+    users: List<User>,
+    selectedUser: User?,
+    expanded: Boolean,
+    intentionsDispatcher: (AuthScreenIntention) -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
             .clickable { // Anchor view
-                expanded = !expanded
+                intentionsDispatcher(
+                    AuthScreenIntention.DropDownExpandedChange(!expanded)
+                )
             }
             .padding(6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text =
-            selectedUser.value?.userName
+            selectedUser?.userName
                 ?: LocalContext.current.getString(R.string.select_user)
         )
         Icon(
@@ -125,18 +123,24 @@ private fun UsersDropDown(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = {
-                expanded = false
+                intentionsDispatcher(
+                    AuthScreenIntention.DropDownExpandedChange(false)
+                )
             },
             modifier = Modifier
                 .fillMaxHeight(
                     fraction = 1.0f / 3
                 )
         ) {
-            users.value.forEach { user ->
+            users.forEach { user ->
                 DropdownMenuItem(
                     onClick = {
-                        onUserClicked(user)
-                        expanded = false
+                        intentionsDispatcher(
+                            AuthScreenIntention.UserSelected(user)
+                        )
+                        intentionsDispatcher(
+                            AuthScreenIntention.DropDownExpandedChange(false)
+                        )
                     }
                 ) {
                     Text(text = user.userName)

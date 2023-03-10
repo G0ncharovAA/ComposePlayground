@@ -1,4 +1,4 @@
-package com.example.composeplayground.presentation.screens.auth
+package com.example.composeplayground.presentation.screens.auth.state
 
 import com.example.composeplayground.R
 

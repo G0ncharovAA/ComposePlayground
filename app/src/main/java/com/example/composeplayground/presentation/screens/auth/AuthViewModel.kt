@@ -1,9 +1,14 @@
 package com.example.composeplayground.presentation.screens.auth
 
 import androidx.lifecycle.*
-import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.domain.interactors.UserInteractor
+import com.example.composeplayground.presentation.screens.auth.intention.AuthScreenIntention
+import com.example.composeplayground.presentation.screens.auth.state.AuthScreenState
+import com.example.composeplayground.presentation.screens.auth.state.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -11,26 +16,62 @@ class AuthViewModel @Inject constructor(
     private val userInteractor: UserInteractor
 ) : ViewModel() {
 
-    val users = liveData {
-        _authState.postValue(AuthState.InProgress)
-        try {
-            val users = userInteractor.getAllUsers()
-            _authState.postValue(AuthState.UsersLoaded)
-            emit(users)
-        } catch (throwable: Throwable) {
-            _authState.postValue(AuthState.Error)
+    private val _viewState = MutableStateFlow<AuthScreenState>(AuthScreenState())
+    val viewState get() = _viewState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            emitNewState(
+                _viewState.value.copy(
+                    authState = AuthState.InProgress
+                )
+            )
+            try {
+                val users = userInteractor.getAllUsers()
+                emitNewState(
+                    _viewState.value.copy(
+                        authState = AuthState.UsersLoaded,
+                        users = users,
+                    )
+                )
+            } catch (throwable: Throwable) {
+                emitNewState(
+                    _viewState.value.copy(
+                        authState = AuthState.Error,
+                    )
+                )
+            }
+            userInteractor.currentUser.collect() {
+                emitNewState(
+                    _viewState.value.copy(
+                        currentUser = it,
+                        authState = it?.let {
+                            AuthState.SignedIn
+                        } ?: _viewState.value.authState,
+                    )
+                )
+            }
         }
     }
 
-    private val _authState = MutableLiveData<AuthState>(AuthState.SignedOut)
-    val authState: LiveData<AuthState>
-        get() = _authState
+    fun dispatchIntention(intention: AuthScreenIntention) {
+        when (intention) {
+            is AuthScreenIntention.DropDownExpandedChange -> {
+                viewModelScope.launch {
+                    emitNewState(
+                        _viewState.value.copy(
+                            dropDownExpanded = intention.expanded
+                        )
+                    )
+                }
+            }
+            is AuthScreenIntention.UserSelected -> {
+                userInteractor.onUserSelected(intention.user)
+            }
+        }
+    }
 
-    val currentUser: LiveData<User?>
-        get() = userInteractor.currentUser.asLiveData()
-
-    fun onUserSelected(user: User) {
-        userInteractor.onUserSelected(user)
-        _authState.postValue(AuthState.SignedIn)
+    private suspend fun emitNewState(state: AuthScreenState) {
+        _viewState.emit(state)
     }
 }
