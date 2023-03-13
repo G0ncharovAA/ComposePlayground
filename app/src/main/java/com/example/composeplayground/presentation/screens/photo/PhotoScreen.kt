@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -33,13 +34,13 @@ fun PhotoScreen(
     navController: NavController,
     viewModel: PhotoViewModel,
 ) {
-    with(viewModel) {
+    with(viewModel.viewState.collectAsState().value) {
         Photo(
             navController = navController,
-            currentUser = currentUser.collectAsState(),
-            photo = photo.observeAsState(),
-            photos = photos.observeAsState(initial = emptyList()),
-            onPhotoClick = ::onPhotoClick
+            currentUser = currentUser,
+            photo = photo,
+            photos = photos,
+            onPhotoClick = viewModel::onPhotoClick
         )
     }
 }
@@ -49,10 +50,9 @@ fun PhotoScreen(
 private fun PhotoPreview() {
     Photo(
         navController = rememberNavController(),
-        currentUser = mockedUser.asMockedState(),
-        photo = mockedPhoto.asMockedState(),
-        photos = List(10) { mockedPhoto }
-            .asMockedState(),
+        currentUser = mockedUser,
+        photo = mockedPhoto,
+        photos = List(10) { mockedPhoto },
         onPhotoClick = {},
     )
 }
@@ -60,9 +60,9 @@ private fun PhotoPreview() {
 @Composable
 fun Photo(
     navController: NavController,
-    currentUser: State<User?>,
-    photo: State<Photo?>,
-    photos: State<List<Photo>>,
+    currentUser: User?,
+    photo: Photo?,
+    photos: List<Photo>,
     onPhotoClick: (Int) -> Unit,
 ) {
     ConstraintLayout(
@@ -81,16 +81,18 @@ fun Photo(
                 .constrainAs(appBar) {
                     top.linkTo(parent.top)
                 },
-            navController = navController,
+            onBackClick = {
+                navController.popBackStack()
+            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
+                    currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
             caption = stringResource(id = R.string.photo)
         )
 
-        photo.value?.let {
+        photo?.let {
             Text(
                 modifier = Modifier.constrainAs(title) {
                     start.linkTo(parent.start, margin = 12.dp)
@@ -122,7 +124,7 @@ fun Photo(
                     bottom.linkTo(parent.bottom)
                 },
         ) {
-            items(photos.value) { photo ->
+            items(photos) { photo ->
                 ThumbPhotoItem(
                     item = photo,
                     onClick = onPhotoClick,

@@ -18,18 +18,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 
 sealed class AppBarItem {
 
     @Composable
-    abstract fun GetComposable(navController: NavController)
+    abstract fun GetComposable()
 
     data class UserItem(val userName: String) : AppBarItem() {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             Text(
                 text = userName,
                 textAlign = TextAlign.Center,
@@ -44,7 +42,7 @@ sealed class AppBarItem {
 @Composable
 fun AppBar(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onBackClick: () -> Unit,
     appBarItems: List<AppBarItem>,
     caption: String,
 ) {
@@ -57,7 +55,7 @@ fun AppBar(
                 .padding(start = 6.dp)
                 .align(Alignment.CenterStart)
                 .clickable {
-                    navController.popBackStack()
+                    onBackClick()
                 },
             imageVector = Icons.Default.ArrowBack,
             contentDescription = LocalContext.current.getString(
@@ -75,7 +73,7 @@ fun AppBar(
             modifier = Modifier.align(Alignment.CenterEnd)
         ) {
             appBarItems.forEach {
-                it.GetComposable(navController = navController)
+                it.GetComposable()
             }
         }
     }
@@ -86,7 +84,7 @@ fun AppBar(
 private fun AppBarPreview() {
     AppBar(
         modifier = Modifier.fillMaxWidth(),
-        navController = rememberNavController(),
+        onBackClick = {},
         appBarItems = listOf<AppBarItem>(
             AppBarItem.UserItem(
                 userName = "Alice"

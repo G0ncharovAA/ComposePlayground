@@ -7,8 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +21,7 @@ import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
+import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.albums.item.PhotoItem
@@ -31,11 +31,11 @@ fun AlbumScreen(
     navController: NavController,
     viewModel: AlbumsViewModel,
 ) {
-    with(viewModel) {
+    with(viewModel.viewState.collectAsState().value) {
         Albums(
             navController = navController,
-            currentUser = currentUser.observeAsState(),
-            albums = albums.observeAsState(emptyList()),
+            currentUser = currentUser,
+            albums = albums,
         )
     }
 }
@@ -45,17 +45,16 @@ fun AlbumScreen(
 private fun AlbumsPreview() {
     Albums(
         navController = rememberNavController(),
-        currentUser = mockedUser.asMockedState(),
-        albums = List(24) { mockedPhoto }
-            .asMockedState(),
+        currentUser = mockedUser,
+        albums = List(24) { mockedPhoto },
     )
 }
 
 @Composable
 fun Albums(
     navController: NavController,
-    currentUser: State<User?>,
-    albums: State<List<Photo>>,
+    currentUser: User?,
+    albums: List<Photo>,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -74,10 +73,12 @@ fun Albums(
                 .constrainAs(appBar) {
                     top.linkTo(parent.top)
                 },
-            navController = navController,
+            onBackClick = {
+                navController.popBackStack()
+            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
+                    currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
             caption = stringResource(id = R.string.albums)
@@ -93,15 +94,17 @@ fun Albums(
                     height = Dimension.fillToConstraints
                 }
         ) {
-            items(albums.value) { photo ->
+            items(albums) { photo ->
                 PhotoItem(
-                    navController = navController,
+                    onItemClick = { albumId, photoId ->
+                        navController.navigate("albums/${albumId}/${photoId}")
+                    },
                     item = photo,
                 )
             }
         }
 
-        if (albums.value.isEmpty()) {
+        if (albums.isEmpty()) {
             LinearProgressIndicator(
                 modifier = Modifier.constrainAs(loading) {
                     top.linkTo(parent.top)
@@ -118,12 +121,27 @@ fun Albums(
                 .constrainAs(navTabBar) {
                     bottom.linkTo(parent.bottom)
                 },
-            navController = navController,
             navItems = listOf<TabBarItem>(
-                TabBarItem.Home(),
-                TabBarItem.ToDos(),
-                TabBarItem.Posts(),
-                TabBarItem.Albums(selected = true),
+                TabBarItem.Home() {
+                    navController.navigate(Destinations.HomeScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
+                TabBarItem.ToDos() {
+                    navController.navigate(Destinations.ToDosScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
+                TabBarItem.Posts() {
+                    navController.navigate(Destinations.PostsScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
+                TabBarItem.Albums(selected = true) {
+                    navController.navigate(Destinations.AlbumsScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
             )
         )
     }

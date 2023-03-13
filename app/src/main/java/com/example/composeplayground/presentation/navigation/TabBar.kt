@@ -15,24 +15,25 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 
-sealed class TabBarItem {
+sealed class TabBarItem(private val onItemClick: () -> Unit) {
 
     abstract val selected: Boolean
 
     @Composable
-    abstract fun GetComposable(navController: NavController)
+    abstract fun GetComposable()
 
-    data class Home(override val selected: Boolean = false) : TabBarItem() {
+    data class Home(
+        override val selected: Boolean = false,
+        private val onItemClick: () -> Unit,
+    ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             Text(
                 text = stringResource(id = R.string.home),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(Destinations.HomeScreen.route) {
-                            launchSingleTop = true
-                        }
+                        onItemClick()
                     }
                     .padding(6.dp),
                 fontWeight = if (selected) {
@@ -47,18 +48,17 @@ sealed class TabBarItem {
     data class ToDos(
         override val selected: Boolean = false,
         val quantity: Int = 0,
-    ) : TabBarItem() {
+        private val onItemClick: () -> Unit,
+    ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             Box {
                 Text(
                     text = stringResource(id = R.string.todos),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .clickable {
-                            navController.navigate(Destinations.ToDosScreen.route) {
-                                launchSingleTop = true
-                            }
+                            onItemClick()
                         }
                         .padding(6.dp),
                     fontWeight = if (selected) {
@@ -77,17 +77,18 @@ sealed class TabBarItem {
         }
     }
 
-    data class Posts(override val selected: Boolean = false) : TabBarItem() {
+    data class Posts(
+        override val selected: Boolean = false,
+        private val onItemClick: () -> Unit,
+    ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             Text(
                 text = stringResource(id = R.string.posts),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(Destinations.PostsScreen.route) {
-                            launchSingleTop = true
-                        }
+                        onItemClick()
                     }
                     .padding(6.dp),
                 fontWeight = if (selected) {
@@ -99,17 +100,18 @@ sealed class TabBarItem {
         }
     }
 
-    data class Albums(override val selected: Boolean = false) : TabBarItem() {
+    data class Albums(
+        override val selected: Boolean = false,
+        private val onItemClick: () -> Unit,
+    ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             Text(
                 text = stringResource(id = R.string.albums),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(Destinations.AlbumsScreen.route) {
-                            launchSingleTop = true
-                        }
+                        onItemClick()
                     }
                     .padding(6.dp),
                 fontWeight = if (selected) {
@@ -125,7 +127,6 @@ sealed class TabBarItem {
 @Composable
 fun NavTabBar(
     modifier: Modifier = Modifier,
-    navController: NavController,
     navItems: List<TabBarItem>,
 ) {
     Row(
@@ -134,7 +135,7 @@ fun NavTabBar(
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         navItems.forEach {
-            it.GetComposable(navController = navController)
+            it.GetComposable()
         }
     }
 }
@@ -145,12 +146,11 @@ private fun NavTabBarPreview() {
     NavTabBar(
         modifier = Modifier
             .fillMaxWidth(),
-        navController = rememberNavController(),
         navItems = listOf<TabBarItem>(
-            TabBarItem.Home(selected = true),
-            TabBarItem.ToDos(selected = false, quantity = 5),
-            TabBarItem.Posts(),
-            TabBarItem.Albums(),
+            TabBarItem.Home(selected = true) {},
+            TabBarItem.ToDos(selected = false, quantity = 5) {},
+            TabBarItem.Posts {},
+            TabBarItem.Albums {},
         )
     )
 }

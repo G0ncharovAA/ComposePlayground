@@ -7,8 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,9 +22,9 @@ import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.asMockedState
 import com.example.composeplayground.presentation.mockedToDo
 import com.example.composeplayground.presentation.mockedUser
+import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.todos.item.ToDo
@@ -35,11 +34,11 @@ fun ToDosScreen(
     navController: NavController,
     viewModel: ToDosViewModel,
 ) {
-    with(viewModel) {
+    with(viewModel.viewState.collectAsState().value) {
         ToDos(
             navController = navController,
-            currentUser = currentUser.observeAsState(),
-            todos = todos.observeAsState(emptyList()),
+            currentUser = currentUser,
+            todos = todos,
         )
     }
 }
@@ -49,17 +48,16 @@ fun ToDosScreen(
 private fun ToDosPreview() {
     ToDos(
         navController = rememberNavController(),
-        currentUser = mockedUser.asMockedState(),
-        todos = List(10) { mockedToDo }
-            .asMockedState(),
+        currentUser = mockedUser,
+        todos = List(10) { mockedToDo },
     )
 }
 
 @Composable
 fun ToDos(
     navController: NavController,
-    currentUser: State<User?>,
-    todos: State<List<ToDo>>,
+    currentUser: User?,
+    todos: List<ToDo>,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -78,10 +76,12 @@ fun ToDos(
                 .constrainAs(appBar) {
                     top.linkTo(parent.top)
                 },
-            navController = navController,
+            onBackClick = {
+                navController.popBackStack()
+            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
+                    currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
             caption = stringResource(id = R.string.todos)
@@ -107,7 +107,7 @@ fun ToDos(
                     height = Dimension.fillToConstraints
                 },
         ) {
-            items(todos.value) { todo ->
+            items(todos) { todo ->
                 ToDo(todo)
             }
         }
@@ -118,12 +118,27 @@ fun ToDos(
                 .constrainAs(navTabBar) {
                     bottom.linkTo(parent.bottom)
                 },
-            navController = navController,
             navItems = listOf<TabBarItem>(
-                TabBarItem.Home(),
-                TabBarItem.ToDos(selected = true),
-                TabBarItem.Posts(),
-                TabBarItem.Albums(),
+                TabBarItem.Home() {
+                    navController.navigate(Destinations.HomeScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
+                TabBarItem.ToDos(selected = true) {
+                    navController.navigate(Destinations.ToDosScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
+                TabBarItem.Posts() {
+                    navController.navigate(Destinations.PostsScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
+                TabBarItem.Albums() {
+                    navController.navigate(Destinations.AlbumsScreen.route) {
+                        launchSingleTop = true
+                    }
+                },
             )
         )
     }

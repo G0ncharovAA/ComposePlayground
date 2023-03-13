@@ -13,13 +13,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
-import com.example.composeplayground.presentation.asMockedState
+import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.screens.auth.intention.AuthScreenIntention
-import com.example.composeplayground.presentation.screens.auth.state.AuthScreenState
 import com.example.composeplayground.presentation.screens.auth.state.AuthState
 
 @Composable
@@ -27,11 +25,17 @@ fun AuthScreen(
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
-    with(viewModel) {
+    with(viewModel.viewState.collectAsState().value) {
         Auth(
-            // Default values of the states
-            navController = navController,
-            authScreenState = viewModel.viewState.collectAsState(),
+            onEnterClick = {
+                navController.navigate(Destinations.HomeScreen.route) {
+                    popUpTo(Destinations.AuthScreen.route) { inclusive = true }
+                }
+            },
+            authState = authState,
+            dropDownExpanded = dropDownExpanded,
+            users = users,
+            currentUser = currentUser,
             intentionsDispatcher = viewModel::dispatchIntention,
         )
     }
@@ -41,16 +45,22 @@ fun AuthScreen(
 @Composable
 private fun AuthPreview() {
     Auth(
-        navController = rememberNavController(),
-        authScreenState = AuthScreenState().asMockedState(),
+        onEnterClick = {},
+        authState = AuthState.SignedOut,
+        dropDownExpanded = false,
+        users = emptyList(),
+        currentUser = mockedUser,
         intentionsDispatcher = {},
     )
 }
 
 @Composable
 private fun Auth(
-    navController: NavController,
-    authScreenState: State<AuthScreenState>,
+    onEnterClick: () -> Unit,
+    authState: AuthState,
+    dropDownExpanded: Boolean,
+    users: List<User>,
+    currentUser: User?,
     intentionsDispatcher: (AuthScreenIntention) -> Unit,
 ) {
     Column(
@@ -62,26 +72,24 @@ private fun Auth(
     ) {
         Text(text = stringResource(R.string.auth_state))
         Text(
-            text = when (authScreenState.value.authState) {
+            text = when (authState) {
                 is AuthState.UsersLoaded -> stringResource(
                     id = R.string.users_loaded_,
-                    authScreenState.value.users.size,
+                    users.size,
                 )
-                else -> stringResource(id = authScreenState.value.authState.stringId)
+                else -> stringResource(id = authState.stringId)
             }
         )
         UsersDropDown(
-            users = authScreenState.value.users,
-            selectedUser = authScreenState.value.currentUser,
-            expanded = authScreenState.value.dropDownExpanded,
+            users = users,
+            selectedUser = currentUser,
+            expanded = dropDownExpanded,
             intentionsDispatcher = intentionsDispatcher,
         )
-        if (authScreenState.value.authState == AuthState.SignedIn) {
+        if (authState == AuthState.SignedIn) {
             Button(
                 onClick = {
-                    navController.navigate(Destinations.HomeScreen.route) {
-                        popUpTo(Destinations.AuthScreen.route) { inclusive = true }
-                    }
+                    onEnterClick()
                 },
             ) {
                 Text(text = stringResource(id = R.string.enter))

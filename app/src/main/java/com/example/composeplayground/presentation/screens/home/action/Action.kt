@@ -1,6 +1,5 @@
 package com.example.composeplayground.presentation.screens.home.action
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -19,27 +18,24 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
-import com.example.composeplayground.presentation.navigation.Destinations
 
-sealed class ActionItem {
+sealed class ActionItem(
+    private val onActionClick: () -> Unit
+) {
 
     @Composable
-    abstract fun GetComposable(navController: NavController)
+    abstract fun GetComposable()
 
-    object ToDosActionItem : ActionItem() {
+    data class ToDosActionItem(private val onActionClick: () -> Unit) : ActionItem(onActionClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             val backgroundColor = MaterialTheme.colors.secondary
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate(Destinations.ToDosScreen.route) {
-                            launchSingleTop = true
-                        }
+                        onActionClick()
                     }
                     .drawBehind {
                         drawRoundRect(
@@ -68,18 +64,16 @@ sealed class ActionItem {
         }
     }
 
-    object PostsActionItem : ActionItem() {
+    data class PostsActionItem(private val onActionClick: () -> Unit) : ActionItem(onActionClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             val backgroundColor = MaterialTheme.colors.secondary
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 9.dp)
                     .clickable {
-                        navController.navigate(Destinations.PostsScreen.route) {
-                            launchSingleTop = true
-                        }
+                        onActionClick()
                     }
                     .drawBehind {
                         drawRoundRect(
@@ -108,17 +102,15 @@ sealed class ActionItem {
         }
     }
 
-    object AlbumsActionItem : ActionItem() {
+    data class AlbumsActionItem(private val onActionClick: () -> Unit) : ActionItem(onActionClick) {
         @Composable
-        override fun GetComposable(navController: NavController) {
+        override fun GetComposable() {
             val backgroundColor = MaterialTheme.colors.secondary
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate(Destinations.AlbumsScreen.route) {
-                            launchSingleTop = true
-                        }
+                        onActionClick()
                     }
                     .drawBehind {
                         drawRoundRect(
@@ -148,21 +140,14 @@ sealed class ActionItem {
     }
 }
 
-val actionItemsDefault = listOf<ActionItem>(
-    ActionItem.ToDosActionItem,
-    ActionItem.PostsActionItem,
-    ActionItem.AlbumsActionItem,
-)
-
 @Composable
 fun ActionsBlock(
     modifier: Modifier = Modifier,
-    navController: NavController,
     actionItems: List<ActionItem>,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         actionItems.forEach {
-            it.GetComposable(navController = navController)
+            it.GetComposable()
         }
     }
 }
@@ -172,7 +157,6 @@ fun ActionsBlock(
 private fun ActionsBlockPreview() {
     ActionsBlock(
         modifier = Modifier.padding(12.dp),
-        navController = rememberNavController(),
         actionItems = actionItemsDefault,
     )
 }

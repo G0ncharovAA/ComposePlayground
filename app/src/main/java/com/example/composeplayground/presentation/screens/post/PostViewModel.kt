@@ -1,14 +1,12 @@
 package com.example.composeplayground.presentation.screens.post
 
 import androidx.lifecycle.*
-import com.example.composeplayground.domain.entities.post.Comment
-import com.example.composeplayground.domain.entities.post.Post
-import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.domain.interactors.PostsInteractor
 import com.example.composeplayground.domain.interactors.UserInteractor
+import com.example.composeplayground.presentation.screens.post.state.PostScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,25 +19,23 @@ class PostViewModel @Inject constructor(
 
     private var _postId = savedStateHandle.get<Int>("postId") ?: 0
 
+    private val _viewState = MutableStateFlow<PostScreenState>(PostScreenState())
+    val viewState get() = _viewState.asStateFlow()
+
     init {
         viewModelScope.launch {
-            _post.update {
-                postsInteractor.getPost(_postId)
-            }
-            _comments.update {
-                postsInteractor.getComments(_postId)
+            _viewState.emit(
+                _viewState.value.copy(
+                    post = postsInteractor.getPost(_postId),
+                    comments = postsInteractor.getComments(_postId)
+                )
+            )
+            // To make possible future extension, not using map operator
+            userInteractor.currentUser.collect {
+                _viewState.emit(
+                    _viewState.value.copy(currentUser = it)
+                )
             }
         }
     }
-
-    private val _post = MutableStateFlow<Post?>(null)
-    val post: LiveData<Post?>
-        get() = _post.asLiveData()
-
-    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
-    val comments: LiveData<List<Comment>>
-        get() = _comments.asLiveData()
-
-    val currentUser: LiveData<User?>
-        get() = userInteractor.currentUser.asLiveData()
 }

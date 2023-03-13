@@ -8,8 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,12 +31,12 @@ fun PostScreen(
     navController: NavController,
     viewModel: PostViewModel,
 ) {
-    with(viewModel) {
+    with(viewModel.viewState.collectAsState().value) {
         Post(
             navController = navController,
-            currentUser = currentUser.observeAsState(),
-            post = post.observeAsState(),
-            comments = comments.observeAsState(initial = emptyList())
+            currentUser = currentUser,
+            post = post,
+            comments = comments,
         )
     }
 }
@@ -47,19 +46,18 @@ fun PostScreen(
 private fun PostPreview() {
     Post(
         navController = rememberNavController(),
-        currentUser = mockedUser.asMockedState(),
-        post = mockedPost.asMockedState(),
-        comments = List(10) { mockedComment }
-            .asMockedState(),
+        currentUser = mockedUser,
+        post = mockedPost,
+        comments = List(10) { mockedComment },
     )
 }
 
 @Composable
 fun Post(
     navController: NavController,
-    currentUser: State<User?>,
-    post: State<Post?>,
-    comments: State<List<Comment>>,
+    currentUser: User?,
+    post: Post?,
+    comments: List<Comment>,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -68,10 +66,12 @@ fun Post(
         AppBar(
             modifier = Modifier
                 .fillMaxWidth(),
-            navController = navController,
+            onBackClick = {
+                navController.popBackStack()
+            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
-                    currentUser.value?.userName ?: stringResource(id = R.string.no_user_name)
+                    currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
             caption = stringResource(id = R.string.post)
@@ -82,7 +82,7 @@ fun Post(
             text = stringResource(id = R.string.comments_for)
         )
 
-        post.value?.title?.let {
+        post?.title?.let {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,7 +103,7 @@ fun Post(
                 .fillMaxWidth()
                 .padding(12.dp),
         ) {
-            items(comments.value) { comment ->
+            items(comments) { comment ->
                 Comment(item = comment)
             }
         }
