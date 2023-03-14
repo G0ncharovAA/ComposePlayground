@@ -21,8 +21,8 @@ import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.navigation.NavTabBar
+import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.albums.item.PhotoItem
 
@@ -33,7 +33,10 @@ fun AlbumScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         Albums(
-            navController = navController,
+            navWrapper = NavWrapper(navController),
+            onItemClick = { albumId, photoId ->
+                navController.navigate("albums/${albumId}/${photoId}")
+            },
             currentUser = currentUser,
             albums = albums,
         )
@@ -44,7 +47,8 @@ fun AlbumScreen(
 @Composable
 private fun AlbumsPreview() {
     Albums(
-        navController = rememberNavController(),
+        navWrapper = NavWrapper(rememberNavController()),
+        onItemClick = { _, _ -> },
         currentUser = mockedUser,
         albums = List(24) { mockedPhoto },
     )
@@ -52,7 +56,8 @@ private fun AlbumsPreview() {
 
 @Composable
 fun Albums(
-    navController: NavController,
+    navWrapper: NavWrapper,
+    onItemClick: (Int, Int) -> Unit,
     currentUser: User?,
     albums: List<Photo>,
 ) {
@@ -74,7 +79,7 @@ fun Albums(
                     top.linkTo(parent.top)
                 },
             onBackClick = {
-                navController.popBackStack()
+                navWrapper.goBack()
             },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
@@ -97,7 +102,7 @@ fun Albums(
             items(albums) { photo ->
                 PhotoItem(
                     onItemClick = { albumId, photoId ->
-                        navController.navigate("albums/${albumId}/${photoId}")
+                        onItemClick(albumId, photoId)
                     },
                     item = photo,
                 )
@@ -123,24 +128,16 @@ fun Albums(
                 },
             navItems = listOf<TabBarItem>(
                 TabBarItem.Home() {
-                    navController.navigate(Destinations.HomeScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goHome()
                 },
                 TabBarItem.ToDos() {
-                    navController.navigate(Destinations.ToDosScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goToDos()
                 },
                 TabBarItem.Posts() {
-                    navController.navigate(Destinations.PostsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goPosts()
                 },
                 TabBarItem.Albums(selected = true) {
-                    navController.navigate(Destinations.AlbumsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goAlbums()
                 },
             )
         )

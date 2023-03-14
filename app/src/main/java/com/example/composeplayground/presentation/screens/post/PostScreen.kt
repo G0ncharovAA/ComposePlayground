@@ -24,6 +24,7 @@ import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
+import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.post.comment.Comment
 
 @Composable
@@ -33,7 +34,7 @@ fun PostScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         Post(
-            navController = navController,
+            navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             post = post,
             comments = comments,
@@ -45,7 +46,7 @@ fun PostScreen(
 @Composable
 private fun PostPreview() {
     Post(
-        navController = rememberNavController(),
+        navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         post = mockedPost,
         comments = List(10) { mockedComment },
@@ -54,7 +55,7 @@ private fun PostPreview() {
 
 @Composable
 fun Post(
-    navController: NavController,
+    navWrapper: NavWrapper,
     currentUser: User?,
     post: Post?,
     comments: List<Comment>,
@@ -67,7 +68,7 @@ fun Post(
             modifier = Modifier
                 .fillMaxWidth(),
             onBackClick = {
-                navController.popBackStack()
+                navWrapper.goBack()
             },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(

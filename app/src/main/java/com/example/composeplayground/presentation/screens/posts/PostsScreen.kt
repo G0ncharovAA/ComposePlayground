@@ -23,8 +23,8 @@ import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
-import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.navigation.NavTabBar
+import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.posts.item.PostItem
 
@@ -35,7 +35,10 @@ fun PostsScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         Posts(
-            navController = navController,
+            navWrapper = NavWrapper(navController),
+            onItemClick = { itemId ->
+                navController.navigate("posts/${itemId}")
+            },
             currentUser = currentUser,
             posts = posts,
         )
@@ -46,7 +49,8 @@ fun PostsScreen(
 @Composable
 fun DefaultPreview() {
     Posts(
-        navController = rememberNavController(),
+        navWrapper = NavWrapper(rememberNavController()),
+        onItemClick = {},
         currentUser = mockedUser,
         posts = List(10) { mockedPost },
     )
@@ -54,7 +58,8 @@ fun DefaultPreview() {
 
 @Composable
 fun Posts(
-    navController: NavController,
+    navWrapper: NavWrapper,
+    onItemClick: (Int) -> Unit,
     currentUser: User?,
     posts: List<Post>,
 ) {
@@ -76,7 +81,7 @@ fun Posts(
                     top.linkTo(parent.top)
                 },
             onBackClick = {
-                navController.popBackStack()
+                navWrapper.goBack()
             },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
@@ -113,7 +118,7 @@ fun Posts(
         ) {
             items(posts) { post ->
                 PostItem(
-                    navController = navController,
+                    onItemClick = onItemClick,
                     item = post,
                 )
             }
@@ -127,24 +132,16 @@ fun Posts(
                 },
             navItems = listOf<TabBarItem>(
                 TabBarItem.Home() {
-                    navController.navigate(Destinations.HomeScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goHome()
                 },
                 TabBarItem.ToDos() {
-                    navController.navigate(Destinations.ToDosScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goToDos()
                 },
                 TabBarItem.Posts(selected = true) {
-                    navController.navigate(Destinations.PostsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goPosts()
                 },
                 TabBarItem.Albums() {
-                    navController.navigate(Destinations.AlbumsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goAlbums()
                 },
             )
         )

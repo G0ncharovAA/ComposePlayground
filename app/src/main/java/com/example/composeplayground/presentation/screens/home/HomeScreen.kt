@@ -17,6 +17,7 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.Destinations
+import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.home.action.ActionItem
 import com.example.composeplayground.presentation.screens.home.action.ActionsBlock
 import com.example.composeplayground.presentation.screens.home.hero.Hero
@@ -28,7 +29,7 @@ fun HomeScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         Home(
-            navController = navController,
+            navWrapper = NavWrapper(navController),
             currentUser = currentUser,
         )
     }
@@ -38,14 +39,14 @@ fun HomeScreen(
 @Composable
 private fun HomePreview() {
     Home(
-        navController = rememberNavController(),
+        navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
     )
 }
 
 @Composable
 fun Home(
-    navController: NavController,
+    navWrapper: NavWrapper,
     currentUser: User?,
 ) {
     Column(
@@ -56,7 +57,7 @@ fun Home(
             modifier = Modifier
                 .fillMaxWidth(),
             onBackClick = {
-                navController.popBackStack()
+                navWrapper.goBack()
             },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
@@ -84,19 +85,13 @@ fun Home(
                 .padding(horizontal = 12.dp),
             actionItems = listOf(
                 ActionItem.ToDosActionItem {
-                    navController.navigate(Destinations.ToDosScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goToDos()
                 },
                 ActionItem.PostsActionItem {
-                    navController.navigate(Destinations.PostsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goPosts()
                 },
                 ActionItem.AlbumsActionItem {
-                    navController.navigate(Destinations.AlbumsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goAlbums()
                 },
             )
         )
@@ -106,24 +101,16 @@ fun Home(
                 .fillMaxWidth(),
             navItems = listOf<TabBarItem>(
                 TabBarItem.Home(selected = true) {
-                    navController.navigate(Destinations.HomeScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goHome()
                 },
                 TabBarItem.ToDos() {
-                    navController.navigate(Destinations.ToDosScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goToDos()
                 },
                 TabBarItem.Posts() {
-                    navController.navigate(Destinations.PostsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goPosts()
                 },
                 TabBarItem.Albums() {
-                    navController.navigate(Destinations.AlbumsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goAlbums()
                 },
             )
         )

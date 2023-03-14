@@ -27,6 +27,7 @@ import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.*
 import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
+import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.photo.item.ThumbPhotoItem
 
 @Composable
@@ -36,7 +37,7 @@ fun PhotoScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         Photo(
-            navController = navController,
+            navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             photo = photo,
             photos = photos,
@@ -49,7 +50,7 @@ fun PhotoScreen(
 @Composable
 private fun PhotoPreview() {
     Photo(
-        navController = rememberNavController(),
+        navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         photo = mockedPhoto,
         photos = List(10) { mockedPhoto },
@@ -59,7 +60,7 @@ private fun PhotoPreview() {
 
 @Composable
 fun Photo(
-    navController: NavController,
+    navWrapper: NavWrapper,
     currentUser: User?,
     photo: Photo?,
     photos: List<Photo>,
@@ -82,7 +83,7 @@ fun Photo(
                     top.linkTo(parent.top)
                 },
             onBackClick = {
-                navController.popBackStack()
+                navWrapper.goBack()
             },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(

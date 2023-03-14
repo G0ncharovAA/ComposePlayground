@@ -18,15 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.presentation.mockedPost
 
 @Composable
 fun PostItem(
-    navController: NavController,
+    onItemClick: (Int) -> Unit,
     item: Post,
 ) {
     ConstraintLayout(
@@ -39,7 +37,7 @@ fun PostItem(
                 shape = MaterialTheme.shapes.small
             )
             .clickable {
-                navController.navigate("posts/${item.id}")
+                onItemClick(item.id)
             }
     ) {
         val (
@@ -100,7 +98,7 @@ fun PostItem(
 @Composable
 fun DefaultPreview() {
     PostItem(
-        navController = rememberNavController(),
+        onItemClick ={},
         item = mockedPost,
     )
 }

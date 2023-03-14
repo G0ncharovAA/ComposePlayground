@@ -24,8 +24,8 @@ import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
 import com.example.composeplayground.presentation.mockedToDo
 import com.example.composeplayground.presentation.mockedUser
-import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.navigation.NavTabBar
+import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.todos.item.ToDo
 
@@ -36,7 +36,7 @@ fun ToDosScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         ToDos(
-            navController = navController,
+            navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             todos = todos,
         )
@@ -47,7 +47,7 @@ fun ToDosScreen(
 @Composable
 private fun ToDosPreview() {
     ToDos(
-        navController = rememberNavController(),
+        navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         todos = List(10) { mockedToDo },
     )
@@ -55,7 +55,7 @@ private fun ToDosPreview() {
 
 @Composable
 fun ToDos(
-    navController: NavController,
+    navWrapper: NavWrapper,
     currentUser: User?,
     todos: List<ToDo>,
 ) {
@@ -77,7 +77,7 @@ fun ToDos(
                     top.linkTo(parent.top)
                 },
             onBackClick = {
-                navController.popBackStack()
+                navWrapper.goBack()
             },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
@@ -120,24 +120,16 @@ fun ToDos(
                 },
             navItems = listOf<TabBarItem>(
                 TabBarItem.Home() {
-                    navController.navigate(Destinations.HomeScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goHome()
                 },
                 TabBarItem.ToDos(selected = true) {
-                    navController.navigate(Destinations.ToDosScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goToDos()
                 },
                 TabBarItem.Posts() {
-                    navController.navigate(Destinations.PostsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goPosts()
                 },
                 TabBarItem.Albums() {
-                    navController.navigate(Destinations.AlbumsScreen.route) {
-                        launchSingleTop = true
-                    }
+                    navWrapper.goAlbums()
                 },
             )
         )
