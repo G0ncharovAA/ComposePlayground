@@ -19,12 +19,19 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.post.Comment
 import com.example.composeplayground.presentation.mockedComment
 
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    Comment(item = mockedComment)
+}
+
 @Composable
 fun Comment(
     item: Comment,
+    modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
     ) {
@@ -33,7 +40,6 @@ fun Comment(
             body,
             icon,
         ) = createRefs()
-
         Text(
             modifier = Modifier
                 .constrainAs(header) {
@@ -49,7 +55,6 @@ fun Comment(
             fontWeight = FontWeight.ExtraLight,
             fontSize = 12.sp,
         )
-
         Icon(
             modifier = Modifier
                 .constrainAs(icon) {
@@ -59,7 +64,6 @@ fun Comment(
             imageVector = Icons.Default.Info,
             contentDescription = stringResource(id = R.string.comments),
         )
-
         Text(
             modifier = Modifier
                 .padding(bottom = 6.dp)
@@ -72,10 +76,4 @@ fun Comment(
             text = item.body,
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Comment(item = mockedComment)
 }

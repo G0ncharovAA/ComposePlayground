@@ -20,22 +20,22 @@ sealed class TabBarItem(private val onItemClick: () -> Unit) {
     abstract val selected: Boolean
 
     @Composable
-    abstract fun GetComposable()
+    abstract fun GetComposable(modifier: Modifier)
 
     data class Home(
         override val selected: Boolean = false,
         private val onItemClick: () -> Unit,
     ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             Text(
-                text = stringResource(id = R.string.home),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
+                modifier = modifier
                     .clickable {
                         onItemClick()
                     }
                     .padding(6.dp),
+                text = stringResource(id = R.string.home),
+                textAlign = TextAlign.Center,
                 fontWeight = if (selected) {
                     FontWeight.Bold
                 } else {
@@ -51,16 +51,16 @@ sealed class TabBarItem(private val onItemClick: () -> Unit) {
         private val onItemClick: () -> Unit,
     ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             Box {
                 Text(
-                    text = stringResource(id = R.string.todos),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
+                    modifier = modifier
                         .clickable {
                             onItemClick()
                         }
                         .padding(6.dp),
+                    text = stringResource(id = R.string.todos),
+                    textAlign = TextAlign.Center,
                     fontWeight = if (selected) {
                         FontWeight.Bold
                     } else {
@@ -69,8 +69,8 @@ sealed class TabBarItem(private val onItemClick: () -> Unit) {
                 )
                 if (quantity > 0) {
                     Text(
+                        modifier = Modifier.align(Alignment.TopEnd),
                         text = quantity.toString(),
-                        modifier = Modifier.align(Alignment.TopEnd)
                     )
                 }
             }
@@ -82,15 +82,15 @@ sealed class TabBarItem(private val onItemClick: () -> Unit) {
         private val onItemClick: () -> Unit,
     ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             Text(
-                text = stringResource(id = R.string.posts),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
+                modifier = modifier
                     .clickable {
                         onItemClick()
                     }
                     .padding(6.dp),
+                text = stringResource(id = R.string.posts),
+                textAlign = TextAlign.Center,
                 fontWeight = if (selected) {
                     FontWeight.Bold
                 } else {
@@ -105,37 +105,21 @@ sealed class TabBarItem(private val onItemClick: () -> Unit) {
         private val onItemClick: () -> Unit,
     ) : TabBarItem(onItemClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             Text(
-                text = stringResource(id = R.string.albums),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
+                modifier = modifier
                     .clickable {
                         onItemClick()
                     }
                     .padding(6.dp),
+                text = stringResource(id = R.string.albums),
+                textAlign = TextAlign.Center,
                 fontWeight = if (selected) {
                     FontWeight.Bold
                 } else {
                     FontWeight.Normal
                 },
             )
-        }
-    }
-}
-
-@Composable
-fun NavTabBar(
-    modifier: Modifier = Modifier,
-    navItems: List<TabBarItem>,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly,
-    ) {
-        navItems.forEach {
-            it.GetComposable()
         }
     }
 }
@@ -151,6 +135,22 @@ private fun NavTabBarPreview() {
             TabBarItem.ToDos(selected = false, quantity = 5) {},
             TabBarItem.Posts {},
             TabBarItem.Albums {},
-        )
+        ),
     )
+}
+
+@Composable
+fun NavTabBar(
+    navItems: List<TabBarItem>,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+    ) {
+        navItems.forEach {
+            it.GetComposable(Modifier)
+        }
+    }
 }

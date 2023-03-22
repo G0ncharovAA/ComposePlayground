@@ -13,15 +13,16 @@ import com.example.composeplayground.presentation.mockedPhoto
 @Composable
 fun ThumbPhotoItem(
     item: Photo,
+    modifier: Modifier = Modifier,
     onClick: (Int) -> Unit,
 ) {
     AsyncImage(
-        model = item.thumbnailUrl,
-        contentDescription = item.title,
-        modifier = Modifier.clickable {
+        modifier = modifier.clickable {
             onClick(item.id)
         }
-            .width(128.dp)
+            .width(128.dp),
+        model = item.thumbnailUrl,
+        contentDescription = item.title,
         )
 }
 

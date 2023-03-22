@@ -23,28 +23,43 @@ import com.example.composeplayground.R
 sealed class AppBarItem {
 
     @Composable
-    abstract fun GetComposable()
+    abstract fun GetComposable(modifier: Modifier)
 
     data class UserItem(val userName: String) : AppBarItem() {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             Text(
+                modifier = modifier
+                    .padding(6.dp),
                 text = userName,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(6.dp),
                 color = MaterialTheme.colors.onPrimary
             )
         }
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun AppBarPreview() {
+    AppBar(
+        modifier = Modifier.fillMaxWidth(),
+        caption = "Home",
+        appBarItems = listOf<AppBarItem>(
+            AppBarItem.UserItem(
+                userName = "Alice"
+            )
+        ),
+        onBackClick = {},
+    )
+}
+
 @Composable
 fun AppBar(
+    caption: String,
+    appBarItems: List<AppBarItem>,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    appBarItems: List<AppBarItem>,
-    caption: String,
 ) {
     Box(
         modifier = modifier
@@ -64,32 +79,17 @@ fun AppBar(
             tint = MaterialTheme.colors.onPrimary,
         )
         Text(
-            text = caption,
             modifier = Modifier
                 .align(Alignment.Center),
+            text = caption,
             color = MaterialTheme.colors.onPrimary
         )
         Row(
             modifier = Modifier.align(Alignment.CenterEnd)
         ) {
             appBarItems.forEach {
-                it.GetComposable()
+                it.GetComposable(Modifier)
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun AppBarPreview() {
-    AppBar(
-        modifier = Modifier.fillMaxWidth(),
-        onBackClick = {},
-        appBarItems = listOf<AppBarItem>(
-            AppBarItem.UserItem(
-                userName = "Alice"
-            )
-        ),
-        caption = "Home"
-    )
 }

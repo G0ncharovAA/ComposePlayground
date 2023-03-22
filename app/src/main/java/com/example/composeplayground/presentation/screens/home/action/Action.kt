@@ -25,14 +25,14 @@ sealed class ActionItem(
 ) {
 
     @Composable
-    abstract fun GetComposable()
+    abstract fun GetComposable(modifier: Modifier)
 
     data class ToDosActionItem(private val onActionClick: () -> Unit) : ActionItem(onActionClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             val backgroundColor = MaterialTheme.colors.secondary
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .clickable {
                         onActionClick()
@@ -48,17 +48,17 @@ sealed class ActionItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
+                    modifier = Modifier.padding(end = 6.dp),
                     imageVector = Icons.Default.Check,
                     contentDescription = stringResource(id = R.string.todos),
-                    modifier = Modifier.padding(end = 6.dp),
                 )
                 Text(
                     text = stringResource(id = R.string.todos)
                 )
                 Icon(
+                    modifier = Modifier.padding(end = 6.dp),
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = stringResource(id = R.string.todos),
-                    modifier = Modifier.padding(end = 6.dp),
                 )
             }
         }
@@ -66,10 +66,10 @@ sealed class ActionItem(
 
     data class PostsActionItem(private val onActionClick: () -> Unit) : ActionItem(onActionClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             val backgroundColor = MaterialTheme.colors.secondary
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(vertical = 9.dp)
                     .clickable {
@@ -86,17 +86,17 @@ sealed class ActionItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
+                    modifier = Modifier.padding(end = 6.dp),
                     imageVector = Icons.Default.Send,
                     contentDescription = stringResource(id = R.string.posts),
-                    modifier = Modifier.padding(end = 6.dp),
                 )
                 Text(
                     text = stringResource(id = R.string.posts)
                 )
                 Icon(
+                    modifier = Modifier.padding(end = 6.dp),
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = stringResource(id = R.string.posts),
-                    modifier = Modifier.padding(end = 6.dp),
                 )
             }
         }
@@ -104,10 +104,10 @@ sealed class ActionItem(
 
     data class AlbumsActionItem(private val onActionClick: () -> Unit) : ActionItem(onActionClick) {
         @Composable
-        override fun GetComposable() {
+        override fun GetComposable(modifier: Modifier) {
             val backgroundColor = MaterialTheme.colors.secondary
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .clickable {
                         onActionClick()
@@ -123,31 +123,19 @@ sealed class ActionItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
+                    modifier = Modifier.padding(end = 6.dp),
                     imageVector = Icons.Default.Place,
                     contentDescription = stringResource(id = R.string.albums),
-                    modifier = Modifier.padding(end = 6.dp),
                 )
                 Text(
                     text = stringResource(id = R.string.albums)
                 )
                 Icon(
+                    modifier = Modifier.padding(end = 6.dp),
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = stringResource(id = R.string.albums),
-                    modifier = Modifier.padding(end = 6.dp),
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun ActionsBlock(
-    modifier: Modifier = Modifier,
-    actionItems: List<ActionItem>,
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        actionItems.forEach {
-            it.GetComposable()
         }
     }
 }
@@ -159,4 +147,16 @@ private fun ActionsBlockPreview() {
         modifier = Modifier.padding(12.dp),
         actionItems = actionItemsDefault,
     )
+}
+
+@Composable
+fun ActionsBlock(
+    actionItems: List<ActionItem>,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        actionItems.forEach {
+            it.GetComposable(Modifier)
+        }
+    }
 }

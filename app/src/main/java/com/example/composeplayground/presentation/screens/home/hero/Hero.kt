@@ -19,26 +19,35 @@ import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.domain.entities.user.concatinate
 import com.example.composeplayground.presentation.mockedUser
 
+@Preview(showBackground = true)
+@Composable
+private fun HeroPreview() {
+    Hero(
+        modifier = Modifier,
+        user = mockedUser,
+    )
+}
+
 @Composable
 fun Hero(
-    modifier: Modifier = Modifier,
     user: User,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(
                 end = 32.dp,
                 bottom = 32.dp
             ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
+                modifier = Modifier.padding(end = 6.dp),
                 imageVector = Icons.Default.Face,
                 contentDescription = stringResource(id = R.string.user_icon),
-                modifier = Modifier.padding(end = 6.dp),
             )
             Column {
                 Text(
@@ -103,20 +112,11 @@ fun Hero(
             }
         }
         Text(
+            modifier = Modifier.align(Alignment.Start),
             text = stringResource(
                 id = R.string.address_,
                 user.address.concatinate(),
             ),
-            modifier = Modifier.align(Alignment.Start)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun HeroPreview() {
-    Hero(
-        modifier = Modifier,
-        user = mockedUser,
-    )
 }

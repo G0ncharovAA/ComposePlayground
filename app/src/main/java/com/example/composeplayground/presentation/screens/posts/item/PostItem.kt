@@ -22,13 +22,23 @@ import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.post.Post
 import com.example.composeplayground.presentation.mockedPost
 
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    PostItem(
+        item = mockedPost,
+        onItemClick ={},
+    )
+}
+
 @Composable
 fun PostItem(
-    onItemClick: (Int) -> Unit,
     item: Post,
+    modifier: Modifier = Modifier,
+    onItemClick: (Int) -> Unit,
 ) {
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
             .border(
@@ -92,13 +102,4 @@ fun PostItem(
             text = item.body,
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PostItem(
-        onItemClick ={},
-        item = mockedPost,
-    )
 }

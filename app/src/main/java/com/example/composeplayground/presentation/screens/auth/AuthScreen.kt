@@ -26,17 +26,17 @@ fun AuthScreen(
     viewModel: AuthViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        Auth(
-            onEnterClick = {
-                navController.navigate(Destinations.HomeScreen.route) {
-                    popUpTo(Destinations.AuthScreen.route) { inclusive = true }
-                }
-            },
+        AuthContent(
             authState = authState,
             dropDownExpanded = dropDownExpanded,
             users = users,
             currentUser = currentUser,
             intentionsDispatcher = viewModel::dispatchIntention,
+            onEnterClick = {
+                navController.navigate(Destinations.HomeScreen.route) {
+                    popUpTo(Destinations.AuthScreen.route) { inclusive = true }
+                }
+            },
         )
     }
 }
@@ -44,24 +44,24 @@ fun AuthScreen(
 @Preview(showBackground = true)
 @Composable
 private fun AuthPreview() {
-    Auth(
-        onEnterClick = {},
+    AuthContent(
         authState = AuthState.SignedOut,
         dropDownExpanded = false,
         users = emptyList(),
         currentUser = mockedUser,
         intentionsDispatcher = {},
+        onEnterClick = {},
     )
 }
 
 @Composable
-private fun Auth(
-    onEnterClick: () -> Unit,
+private fun AuthContent(
     authState: AuthState,
     dropDownExpanded: Boolean,
     users: List<User>,
     currentUser: User?,
     intentionsDispatcher: (AuthScreenIntention) -> Unit,
+    onEnterClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -103,11 +103,12 @@ private fun UsersDropDown(
     users: List<User>,
     selectedUser: User?,
     expanded: Boolean,
+    modifier: Modifier = Modifier,
     intentionsDispatcher: (AuthScreenIntention) -> Unit,
 ) {
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable { // Anchor view
                 intentionsDispatcher(
                     AuthScreenIntention.DropDownExpandedChange(!expanded)
@@ -122,23 +123,23 @@ private fun UsersDropDown(
                 ?: LocalContext.current.getString(R.string.select_user)
         )
         Icon(
+            modifier = modifier.padding(start = 6.dp),
             imageVector = Icons.Filled.ArrowDropDown,
             contentDescription = LocalContext.current.getString(
                 R.string.users_dropdown
             ),
-            modifier = Modifier.padding(start = 6.dp)
         )
         DropdownMenu(
+            modifier = modifier
+                .fillMaxHeight(
+                    fraction = 1.0f / 3
+                ),
             expanded = expanded,
             onDismissRequest = {
                 intentionsDispatcher(
                     AuthScreenIntention.DropDownExpandedChange(false)
                 )
             },
-            modifier = Modifier
-                .fillMaxHeight(
-                    fraction = 1.0f / 3
-                )
         ) {
             users.forEach { user ->
                 DropdownMenuItem(

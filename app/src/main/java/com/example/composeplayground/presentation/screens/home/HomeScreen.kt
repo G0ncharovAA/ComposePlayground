@@ -16,7 +16,6 @@ import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.R
 import com.example.composeplayground.domain.entities.user.User
 import com.example.composeplayground.presentation.mockedUser
-import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.home.action.ActionItem
 import com.example.composeplayground.presentation.screens.home.action.ActionsBlock
@@ -28,7 +27,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        Home(
+        HomeContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
         )
@@ -38,14 +37,14 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun HomePreview() {
-    Home(
+    HomeContent(
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
     )
 }
 
 @Composable
-fun Home(
+private fun HomeContent(
     navWrapper: NavWrapper,
     currentUser: User?,
 ) {
@@ -56,17 +55,16 @@ fun Home(
         AppBar(
             modifier = Modifier
                 .fillMaxWidth(),
-            onBackClick = {
-                navWrapper.goBack()
-            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringResource(id = R.string.home)
+            caption = stringResource(id = R.string.home),
+            onBackClick = {
+                navWrapper.goBack()
+            },
         )
-
         currentUser?.let {
             Hero(
                 modifier = Modifier
@@ -76,7 +74,6 @@ fun Home(
                 user = it,
             )
         }
-
         ActionsBlock(
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,7 +92,6 @@ fun Home(
                 },
             )
         )
-
         NavTabBar(
             modifier = Modifier
                 .fillMaxWidth(),

@@ -22,10 +22,19 @@ import androidx.constraintlayout.compose.Dimension
 import com.example.composeplayground.domain.entities.todo.ToDo
 import com.example.composeplayground.presentation.mockedToDo
 
+@Preview(showBackground = true)
 @Composable
-fun ToDo(item: ToDo) {
+fun DefaultPreview() {
+    ToDo(item = mockedToDo)
+}
+
+@Composable
+fun ToDo(
+    item: ToDo,
+    modifier: Modifier = Modifier,
+) {
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
             .border(
@@ -50,7 +59,6 @@ fun ToDo(item: ToDo) {
             fontWeight = FontWeight.ExtraLight,
             fontSize = 12.sp,
         )
-
         Text(
             modifier = Modifier
                 .padding(bottom = 6.dp)
@@ -62,7 +70,6 @@ fun ToDo(item: ToDo) {
                 },
             text = item.title,
         )
-
         Icon(
             modifier = Modifier
                 .constrainAs(complete) {
@@ -78,10 +85,4 @@ fun ToDo(item: ToDo) {
             contentDescription = stringResource(id = R.string.is_complete)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ToDo(item = mockedToDo)
 }

@@ -7,9 +7,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -17,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -36,7 +33,7 @@ fun PhotoScreen(
     viewModel: PhotoViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        Photo(
+        PhotoContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             photo = photo,
@@ -49,7 +46,7 @@ fun PhotoScreen(
 @Preview(showBackground = true)
 @Composable
 private fun PhotoPreview() {
-    Photo(
+    PhotoContent(
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         photo = mockedPhoto,
@@ -59,7 +56,7 @@ private fun PhotoPreview() {
 }
 
 @Composable
-fun Photo(
+private fun PhotoContent(
     navWrapper: NavWrapper,
     currentUser: User?,
     photo: Photo?,
@@ -69,6 +66,7 @@ fun Photo(
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
     ) {
+
         val (
             appBar,
             title,
@@ -82,17 +80,16 @@ fun Photo(
                 .constrainAs(appBar) {
                     top.linkTo(parent.top)
                 },
-            onBackClick = {
-                navWrapper.goBack()
-            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringResource(id = R.string.photo)
+            caption = stringResource(id = R.string.photo),
+            onBackClick = {
+                navWrapper.goBack()
+            },
         )
-
         photo?.let {
             Text(
                 modifier = Modifier.constrainAs(title) {
@@ -104,19 +101,17 @@ fun Photo(
                 text = it.title,
                 textAlign = TextAlign.Center,
             )
-
             AsyncImage(
-                model = it.url,
-                contentDescription = it.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
                     .constrainAs(photoWidget) {
                         top.linkTo(title.bottom, margin = 12.dp)
-                    }
+                    },
+                model = it.url,
+                contentDescription = it.title,
             )
         }
-
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()

@@ -10,28 +10,30 @@ import coil.compose.AsyncImage
 import com.example.composeplayground.domain.entities.album.Photo
 import com.example.composeplayground.presentation.mockedPhoto
 
-@Composable
-fun PhotoItem(
-    onItemClick: (Int, Int) -> Unit,
-    item: Photo,
-) {
-    AsyncImage(
-        contentScale = ContentScale.FillWidth,
-        model = item.thumbnailUrl,
-        contentDescription = item.title,
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                onItemClick(item.albumId, item.id)
-            }
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun PhotoItemPreview() {
     PhotoItem(
-        onItemClick = { _, _ -> },
+        modifier = Modifier,
         item = mockedPhoto,
+        onItemClick = { _, _ -> },
+    )
+}
+
+@Composable
+fun PhotoItem(
+    item: Photo,
+    modifier: Modifier = Modifier,
+    onItemClick: (Int, Int) -> Unit,
+) {
+    AsyncImage(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable {
+                onItemClick(item.albumId, item.id)
+            },
+        contentScale = ContentScale.FillWidth,
+        model = item.thumbnailUrl,
+        contentDescription = item.title,
     )
 }

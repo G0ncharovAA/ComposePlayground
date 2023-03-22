@@ -39,9 +39,9 @@ fun NavigationMain() {
     val navController = rememberNavController()
 
     NavHost(
+        modifier = Modifier.fillMaxSize(),
         navController = navController,
         startDestination = Destinations.AuthScreen.route,
-        modifier = Modifier.fillMaxSize(),
     ) {
         composable(Destinations.AuthScreen.route) {
             AuthScreen(

@@ -33,7 +33,7 @@ fun PostScreen(
     viewModel: PostViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        Post(
+        PostContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             post = post,
@@ -45,7 +45,7 @@ fun PostScreen(
 @Preview(showBackground = true)
 @Composable
 private fun PostPreview() {
-    Post(
+    PostContent(
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         post = mockedPost,
@@ -54,7 +54,7 @@ private fun PostPreview() {
 }
 
 @Composable
-fun Post(
+private fun PostContent(
     navWrapper: NavWrapper,
     currentUser: User?,
     post: Post?,
@@ -77,12 +77,10 @@ fun Post(
             ),
             caption = stringResource(id = R.string.post)
         )
-
         Text(
             modifier = Modifier.padding(start = 12.dp, top = 64.dp),
             text = stringResource(id = R.string.comments_for)
         )
-
         post?.title?.let {
             Text(
                 modifier = Modifier
@@ -93,12 +91,10 @@ fun Post(
                 fontWeight = FontWeight.Bold,
             )
         }
-
         Text(
             modifier = Modifier.padding(start = 12.dp, top = 12.dp),
             text = stringResource(id = R.string.comments)
         )
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()

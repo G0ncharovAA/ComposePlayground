@@ -34,13 +34,13 @@ fun PostsScreen(
     viewModel: PostsViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        Posts(
+        PostsContent(
             navWrapper = NavWrapper(navController),
+            currentUser = currentUser,
+            posts = posts,
             onItemClick = { itemId ->
                 navController.navigate("posts/${itemId}")
             },
-            currentUser = currentUser,
-            posts = posts,
         )
     }
 }
@@ -48,7 +48,7 @@ fun PostsScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    Posts(
+    PostsContent(
         navWrapper = NavWrapper(rememberNavController()),
         onItemClick = {},
         currentUser = mockedUser,
@@ -57,11 +57,11 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun Posts(
+private fun PostsContent(
     navWrapper: NavWrapper,
-    onItemClick: (Int) -> Unit,
     currentUser: User?,
     posts: List<Post>,
+    onItemClick: (Int) -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -90,7 +90,6 @@ fun Posts(
             ),
             caption = stringResource(id = R.string.posts)
         )
-
         currentUser?.let {
             Text(
                 modifier = Modifier
@@ -106,7 +105,6 @@ fun Posts(
                 fontWeight = FontWeight.Bold,
             )
         }
-
         LazyColumn(
             modifier = Modifier
                 .padding(12.dp)
@@ -123,7 +121,6 @@ fun Posts(
                 )
             }
         }
-
         NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()

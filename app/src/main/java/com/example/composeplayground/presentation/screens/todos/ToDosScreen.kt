@@ -35,7 +35,7 @@ fun ToDosScreen(
     viewModel: ToDosViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        ToDos(
+        ToDosContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             todos = todos,
@@ -46,7 +46,7 @@ fun ToDosScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ToDosPreview() {
-    ToDos(
+    ToDosContent(
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         todos = List(10) { mockedToDo },
@@ -54,7 +54,7 @@ private fun ToDosPreview() {
 }
 
 @Composable
-fun ToDos(
+private fun ToDosContent(
     navWrapper: NavWrapper,
     currentUser: User?,
     todos: List<ToDo>,
@@ -76,17 +76,16 @@ fun ToDos(
                 .constrainAs(appBar) {
                     top.linkTo(parent.top)
                 },
-            onBackClick = {
-                navWrapper.goBack()
-            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringResource(id = R.string.todos)
+            caption = stringResource(id = R.string.todos),
+            onBackClick = {
+                navWrapper.goBack()
+            },
         )
-
         Text(
             modifier = Modifier
                 .padding(12.dp)
@@ -97,7 +96,6 @@ fun ToDos(
             text = stringResource(id = R.string.these_are_todos),
             fontWeight = FontWeight.Bold,
         )
-
         LazyColumn(
             modifier = Modifier
                 .padding(12.dp)
@@ -111,7 +109,6 @@ fun ToDos(
                 ToDo(todo)
             }
         }
-
         NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()

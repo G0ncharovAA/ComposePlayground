@@ -32,13 +32,13 @@ fun AlbumScreen(
     viewModel: AlbumsViewModel,
 ) {
     with(viewModel.viewState.collectAsState().value) {
-        Albums(
+        AlbumsContent(
             navWrapper = NavWrapper(navController),
+            currentUser = currentUser,
+            albums = albums,
             onItemClick = { albumId, photoId ->
                 navController.navigate("albums/${albumId}/${photoId}")
             },
-            currentUser = currentUser,
-            albums = albums,
         )
     }
 }
@@ -46,20 +46,20 @@ fun AlbumScreen(
 @Preview(showBackground = true)
 @Composable
 private fun AlbumsPreview() {
-    Albums(
+    AlbumsContent(
         navWrapper = NavWrapper(rememberNavController()),
-        onItemClick = { _, _ -> },
         currentUser = mockedUser,
         albums = List(24) { mockedPhoto },
+        onItemClick = { _, _ -> },
     )
 }
 
 @Composable
-fun Albums(
+private fun AlbumsContent(
     navWrapper: NavWrapper,
-    onItemClick: (Int, Int) -> Unit,
     currentUser: User?,
     albums: List<Photo>,
+    onItemClick: (Int, Int) -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -78,37 +78,35 @@ fun Albums(
                 .constrainAs(appBar) {
                     top.linkTo(parent.top)
                 },
-            onBackClick = {
-                navWrapper.goBack()
-            },
             appBarItems = listOf<AppBarItem>(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
             ),
-            caption = stringResource(id = R.string.albums)
+            caption = stringResource(id = R.string.albums),
+            onBackClick = {
+                navWrapper.goBack()
+            },
         )
-
         LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(screenContent) {
                     top.linkTo(appBar.bottom)
                     bottom.linkTo(navTabBar.top)
                     height = Dimension.fillToConstraints
-                }
+                },
+            columns = GridCells.Fixed(3),
         ) {
             items(albums) { photo ->
                 PhotoItem(
+                    item = photo,
                     onItemClick = { albumId, photoId ->
                         onItemClick(albumId, photoId)
                     },
-                    item = photo,
                 )
             }
         }
-
         if (albums.isEmpty()) {
             LinearProgressIndicator(
                 modifier = Modifier.constrainAs(loading) {
@@ -119,7 +117,6 @@ fun Albums(
                 }
             )
         }
-
         NavTabBar(
             modifier = Modifier
                 .fillMaxWidth()
