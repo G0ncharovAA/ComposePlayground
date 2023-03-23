@@ -28,6 +28,8 @@ import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.todos.item.ToDo
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ToDosScreen(
@@ -38,7 +40,7 @@ fun ToDosScreen(
         ToDosContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
-            todos = todos,
+            todos = todos.toImmutableList(),
         )
     }
 }
@@ -49,7 +51,7 @@ private fun ToDosPreview() {
     ToDosContent(
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
-        todos = List(10) { mockedToDo },
+        todos = List(10) { mockedToDo }.toImmutableList(),
     )
 }
 
@@ -57,7 +59,7 @@ private fun ToDosPreview() {
 private fun ToDosContent(
     navWrapper: NavWrapper,
     currentUser: User?,
-    todos: List<ToDo>,
+    todos: ImmutableList<ToDo>,
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
@@ -80,7 +82,7 @@ private fun ToDosContent(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
-            ),
+            ).toImmutableList(),
             caption = stringResource(id = R.string.todos),
             onBackClick = {
                 navWrapper.goBack()
@@ -128,7 +130,7 @@ private fun ToDosContent(
                 TabBarItem.Albums() {
                     navWrapper.goAlbums()
                 },
-            )
+            ).toImmutableList()
         )
     }
 }

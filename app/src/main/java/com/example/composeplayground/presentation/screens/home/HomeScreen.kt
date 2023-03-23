@@ -20,6 +20,7 @@ import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.home.action.ActionItem
 import com.example.composeplayground.presentation.screens.home.action.ActionsBlock
 import com.example.composeplayground.presentation.screens.home.hero.Hero
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeScreen(
@@ -59,7 +60,7 @@ private fun HomeContent(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
-            ),
+            ).toImmutableList(),
             caption = stringResource(id = R.string.home),
             onBackClick = {
                 navWrapper.goBack()
@@ -90,7 +91,7 @@ private fun HomeContent(
                 ActionItem.AlbumsActionItem {
                     navWrapper.goAlbums()
                 },
-            )
+            ).toImmutableList(),
         )
         NavTabBar(
             modifier = Modifier
@@ -108,7 +109,7 @@ private fun HomeContent(
                 TabBarItem.Albums() {
                     navWrapper.goAlbums()
                 },
-            )
+            ).toImmutableList()
         )
     }
 }

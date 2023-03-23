@@ -26,6 +26,8 @@ import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
 import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.post.comment.Comment
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PostScreen(
@@ -37,7 +39,7 @@ fun PostScreen(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             post = post,
-            comments = comments,
+            comments = comments.toImmutableList(),
         )
     }
 }
@@ -49,7 +51,7 @@ private fun PostPreview() {
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         post = mockedPost,
-        comments = List(10) { mockedComment },
+        comments = List(10) { mockedComment }.toImmutableList(),
     )
 }
 
@@ -58,7 +60,7 @@ private fun PostContent(
     navWrapper: NavWrapper,
     currentUser: User?,
     post: Post?,
-    comments: List<Comment>,
+    comments: ImmutableList<Comment>,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -74,7 +76,7 @@ private fun PostContent(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
-            ),
+            ).toImmutableList(),
             caption = stringResource(id = R.string.post)
         )
         Text(

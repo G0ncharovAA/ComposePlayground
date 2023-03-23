@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +20,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composeplayground.R
+import com.example.composeplayground.presentation.asMockedState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class AppBarItem {
 
@@ -49,7 +53,7 @@ private fun AppBarPreview() {
             AppBarItem.UserItem(
                 userName = "Alice"
             )
-        ),
+        ).toImmutableList(),
         onBackClick = {},
     )
 }
@@ -57,7 +61,7 @@ private fun AppBarPreview() {
 @Composable
 fun AppBar(
     caption: String,
-    appBarItems: List<AppBarItem>,
+    appBarItems: ImmutableList<AppBarItem>,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
 ) {

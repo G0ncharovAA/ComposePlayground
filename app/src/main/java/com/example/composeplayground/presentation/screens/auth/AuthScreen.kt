@@ -19,6 +19,9 @@ import com.example.composeplayground.presentation.mockedUser
 import com.example.composeplayground.presentation.navigation.Destinations
 import com.example.composeplayground.presentation.screens.auth.intention.AuthScreenIntention
 import com.example.composeplayground.presentation.screens.auth.state.AuthState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun AuthScreen(
@@ -29,7 +32,7 @@ fun AuthScreen(
         AuthContent(
             authState = authState,
             dropDownExpanded = dropDownExpanded,
-            users = users,
+            users = users.toImmutableList(),
             currentUser = currentUser,
             intentionsDispatcher = viewModel::dispatchIntention,
             onEnterClick = {
@@ -47,7 +50,7 @@ private fun AuthPreview() {
     AuthContent(
         authState = AuthState.SignedOut,
         dropDownExpanded = false,
-        users = emptyList(),
+        users = persistentListOf(),
         currentUser = mockedUser,
         intentionsDispatcher = {},
         onEnterClick = {},
@@ -58,7 +61,7 @@ private fun AuthPreview() {
 private fun AuthContent(
     authState: AuthState,
     dropDownExpanded: Boolean,
-    users: List<User>,
+    users: ImmutableList<User>,
     currentUser: User?,
     intentionsDispatcher: (AuthScreenIntention) -> Unit,
     onEnterClick: () -> Unit,
@@ -100,7 +103,7 @@ private fun AuthContent(
 
 @Composable
 private fun UsersDropDown(
-    users: List<User>,
+    users: ImmutableList<User>,
     selectedUser: User?,
     expanded: Boolean,
     modifier: Modifier = Modifier,

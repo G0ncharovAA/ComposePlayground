@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeplayground.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class TabBarItem(private val onItemClick: () -> Unit) {
 
@@ -135,13 +137,13 @@ private fun NavTabBarPreview() {
             TabBarItem.ToDos(selected = false, quantity = 5) {},
             TabBarItem.Posts {},
             TabBarItem.Albums {},
-        ),
+        ).toImmutableList(),
     )
 }
 
 @Composable
 fun NavTabBar(
-    navItems: List<TabBarItem>,
+    navItems: ImmutableList<TabBarItem>,
     modifier: Modifier = Modifier,
 ) {
     Row(

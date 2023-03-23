@@ -1,7 +1,9 @@
 package com.example.composeplayground.presentation.navigation
 
 import androidx.navigation.NavController
+import javax.annotation.concurrent.Immutable
 
+@Immutable
 class NavWrapper(private val navController: NavController) {
 
     fun goBack() {

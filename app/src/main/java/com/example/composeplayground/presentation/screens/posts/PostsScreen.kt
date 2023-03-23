@@ -27,6 +27,8 @@ import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.posts.item.PostItem
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PostsScreen(
@@ -37,7 +39,7 @@ fun PostsScreen(
         PostsContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
-            posts = posts,
+            posts = posts.toImmutableList(),
             onItemClick = { itemId ->
                 navController.navigate("posts/${itemId}")
             },
@@ -52,7 +54,7 @@ fun DefaultPreview() {
         navWrapper = NavWrapper(rememberNavController()),
         onItemClick = {},
         currentUser = mockedUser,
-        posts = List(10) { mockedPost },
+        posts = List(10) { mockedPost }.toImmutableList(),
     )
 }
 
@@ -60,7 +62,7 @@ fun DefaultPreview() {
 private fun PostsContent(
     navWrapper: NavWrapper,
     currentUser: User?,
-    posts: List<Post>,
+    posts: ImmutableList<Post>,
     onItemClick: (Int) -> Unit,
 ) {
     ConstraintLayout(
@@ -87,7 +89,7 @@ private fun PostsContent(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
-            ),
+            ).toImmutableList(),
             caption = stringResource(id = R.string.posts)
         )
         currentUser?.let {
@@ -140,7 +142,7 @@ private fun PostsContent(
                 TabBarItem.Albums() {
                     navWrapper.goAlbums()
                 },
-            )
+            ).toImmutableList()
         )
     }
 }

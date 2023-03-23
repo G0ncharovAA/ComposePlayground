@@ -25,6 +25,8 @@ import com.example.composeplayground.presentation.navigation.NavTabBar
 import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.navigation.TabBarItem
 import com.example.composeplayground.presentation.screens.albums.item.PhotoItem
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun AlbumScreen(
@@ -35,7 +37,7 @@ fun AlbumScreen(
         AlbumsContent(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
-            albums = albums,
+            albums = albums.toImmutableList(),
             onItemClick = { albumId, photoId ->
                 navController.navigate("albums/${albumId}/${photoId}")
             },
@@ -49,7 +51,7 @@ private fun AlbumsPreview() {
     AlbumsContent(
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
-        albums = List(24) { mockedPhoto },
+        albums = List(24) { mockedPhoto }.toImmutableList(),
         onItemClick = { _, _ -> },
     )
 }
@@ -58,7 +60,7 @@ private fun AlbumsPreview() {
 private fun AlbumsContent(
     navWrapper: NavWrapper,
     currentUser: User?,
-    albums: List<Photo>,
+    albums: ImmutableList<Photo>,
     onItemClick: (Int, Int) -> Unit,
 ) {
     ConstraintLayout(
@@ -82,7 +84,7 @@ private fun AlbumsContent(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
-            ),
+            ).toImmutableList(),
             caption = stringResource(id = R.string.albums),
             onBackClick = {
                 navWrapper.goBack()
@@ -136,7 +138,7 @@ private fun AlbumsContent(
                 TabBarItem.Albums(selected = true) {
                     navWrapper.goAlbums()
                 },
-            )
+            ).toImmutableList()
         )
     }
 }

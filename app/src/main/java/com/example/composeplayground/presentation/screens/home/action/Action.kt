@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composeplayground.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class ActionItem(
     private val onActionClick: () -> Unit
@@ -145,13 +147,13 @@ sealed class ActionItem(
 private fun ActionsBlockPreview() {
     ActionsBlock(
         modifier = Modifier.padding(12.dp),
-        actionItems = actionItemsDefault,
+        actionItems = actionItemsDefault.toImmutableList(),
     )
 }
 
 @Composable
 fun ActionsBlock(
-    actionItems: List<ActionItem>,
+    actionItems: ImmutableList<ActionItem>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {

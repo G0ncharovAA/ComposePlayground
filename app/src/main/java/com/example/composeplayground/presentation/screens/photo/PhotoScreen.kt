@@ -26,6 +26,8 @@ import com.example.composeplayground.presentation.appbar.AppBar
 import com.example.composeplayground.presentation.appbar.AppBarItem
 import com.example.composeplayground.presentation.navigation.NavWrapper
 import com.example.composeplayground.presentation.screens.photo.item.ThumbPhotoItem
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun PhotoScreen(
@@ -37,7 +39,7 @@ fun PhotoScreen(
             navWrapper = NavWrapper(navController),
             currentUser = currentUser,
             photo = photo,
-            photos = photos,
+            photos = photos.toImmutableList(),
             onPhotoClick = viewModel::onPhotoClick
         )
     }
@@ -50,7 +52,7 @@ private fun PhotoPreview() {
         navWrapper = NavWrapper(rememberNavController()),
         currentUser = mockedUser,
         photo = mockedPhoto,
-        photos = List(10) { mockedPhoto },
+        photos = List(10) { mockedPhoto }.toImmutableList(),
         onPhotoClick = {},
     )
 }
@@ -60,7 +62,7 @@ private fun PhotoContent(
     navWrapper: NavWrapper,
     currentUser: User?,
     photo: Photo?,
-    photos: List<Photo>,
+    photos: ImmutableList<Photo>,
     onPhotoClick: (Int) -> Unit,
 ) {
     ConstraintLayout(
@@ -84,7 +86,7 @@ private fun PhotoContent(
                 AppBarItem.UserItem(
                     currentUser?.userName ?: stringResource(id = R.string.no_user_name)
                 )
-            ),
+            ).toImmutableList(),
             caption = stringResource(id = R.string.photo),
             onBackClick = {
                 navWrapper.goBack()
