@@ -37,7 +37,7 @@ fun PostsScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         PostsContent(
-            navWrapper = NavWrapper(navController),
+            navWrapper = NavWrapper { navController },
             currentUser = currentUser,
             posts = posts.toImmutableList(),
             onItemClick = { itemId ->
@@ -50,8 +50,10 @@ fun PostsScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
+    val navController = rememberNavController()
+
     PostsContent(
-        navWrapper = NavWrapper(rememberNavController()),
+        navWrapper = NavWrapper { navController },
         onItemClick = {},
         currentUser = mockedUser,
         posts = List(10) { mockedPost }.toImmutableList(),

@@ -36,7 +36,7 @@ fun PhotoScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         PhotoContent(
-            navWrapper = NavWrapper(navController),
+            navWrapper = NavWrapper { navController },
             currentUser = currentUser,
             photo = photo,
             photos = photos.toImmutableList(),
@@ -48,8 +48,10 @@ fun PhotoScreen(
 @Preview(showBackground = true)
 @Composable
 private fun PhotoPreview() {
+    val navController = rememberNavController()
+
     PhotoContent(
-        navWrapper = NavWrapper(rememberNavController()),
+        navWrapper = NavWrapper { navController },
         currentUser = mockedUser,
         photo = mockedPhoto,
         photos = List(10) { mockedPhoto }.toImmutableList(),

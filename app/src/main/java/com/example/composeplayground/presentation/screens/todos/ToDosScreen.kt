@@ -38,7 +38,7 @@ fun ToDosScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         ToDosContent(
-            navWrapper = NavWrapper(navController),
+            navWrapper = NavWrapper { navController },
             currentUser = currentUser,
             todos = todos.toImmutableList(),
         )
@@ -48,8 +48,10 @@ fun ToDosScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ToDosPreview() {
+    val navController = rememberNavController()
+
     ToDosContent(
-        navWrapper = NavWrapper(rememberNavController()),
+        navWrapper = NavWrapper { navController },
         currentUser = mockedUser,
         todos = List(10) { mockedToDo }.toImmutableList(),
     )

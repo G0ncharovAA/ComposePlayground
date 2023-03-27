@@ -1,35 +1,33 @@
 package com.example.composeplayground.presentation.navigation
 
 import androidx.navigation.NavController
-import javax.annotation.concurrent.Immutable
 
-@Immutable
-class NavWrapper(private val navController: NavController) {
+class NavWrapper(private val getNavController:() -> NavController) { // Now its stable!
 
     fun goBack() {
-        navController.popBackStack()
+        getNavController().popBackStack()
     }
 
     fun goHome() {
-        navController.navigate(Destinations.HomeScreen.route) {
+        getNavController().navigate(Destinations.HomeScreen.route) {
             launchSingleTop = true
         }
     }
 
     fun goToDos() {
-        navController.navigate(Destinations.ToDosScreen.route) {
+        getNavController().navigate(Destinations.ToDosScreen.route) {
             launchSingleTop = true
         }
     }
 
     fun goPosts() {
-        navController.navigate(Destinations.PostsScreen.route) {
+        getNavController().navigate(Destinations.PostsScreen.route) {
             launchSingleTop = true
         }
     }
 
     fun goAlbums() {
-        navController.navigate(Destinations.AlbumsScreen.route) {
+        getNavController().navigate(Destinations.AlbumsScreen.route) {
             launchSingleTop = true
         }
     }

@@ -36,7 +36,7 @@ fun PostScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         PostContent(
-            navWrapper = NavWrapper(navController),
+            navWrapper = NavWrapper { navController },
             currentUser = currentUser,
             post = post,
             comments = comments.toImmutableList(),
@@ -47,8 +47,10 @@ fun PostScreen(
 @Preview(showBackground = true)
 @Composable
 private fun PostPreview() {
+    val navController = rememberNavController()
+
     PostContent(
-        navWrapper = NavWrapper(rememberNavController()),
+        navWrapper = NavWrapper { navController },
         currentUser = mockedUser,
         post = mockedPost,
         comments = List(10) { mockedComment }.toImmutableList(),

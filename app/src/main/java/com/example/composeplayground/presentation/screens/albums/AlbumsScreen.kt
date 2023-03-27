@@ -35,7 +35,7 @@ fun AlbumScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         AlbumsContent(
-            navWrapper = NavWrapper(navController),
+            navWrapper = NavWrapper { navController },
             currentUser = currentUser,
             albums = albums.toImmutableList(),
             onItemClick = { albumId, photoId ->
@@ -48,8 +48,10 @@ fun AlbumScreen(
 @Preview(showBackground = true)
 @Composable
 private fun AlbumsPreview() {
+    val navController = rememberNavController()
+
     AlbumsContent(
-        navWrapper = NavWrapper(rememberNavController()),
+        navWrapper = NavWrapper { navController },
         currentUser = mockedUser,
         albums = List(24) { mockedPhoto }.toImmutableList(),
         onItemClick = { _, _ -> },

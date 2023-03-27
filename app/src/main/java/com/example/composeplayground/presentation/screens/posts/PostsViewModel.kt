@@ -5,8 +5,11 @@ import com.example.composeplayground.domain.interactors.PostsInteractor
 import com.example.composeplayground.domain.interactors.UserInteractor
 import com.example.composeplayground.presentation.screens.posts.state.PostsScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.actor
+import kotlinx.coroutines.channels.broadcast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.future.future
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

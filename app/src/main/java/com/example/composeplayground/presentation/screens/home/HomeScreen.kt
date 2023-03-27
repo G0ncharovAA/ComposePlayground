@@ -29,7 +29,7 @@ fun HomeScreen(
 ) {
     with(viewModel.viewState.collectAsState().value) {
         HomeContent(
-            navWrapper = NavWrapper(navController),
+            navWrapper = NavWrapper { navController },
             currentUser = currentUser,
         )
     }
@@ -38,8 +38,10 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun HomePreview() {
+    val navController = rememberNavController()
+
     HomeContent(
-        navWrapper = NavWrapper(rememberNavController()),
+        navWrapper = NavWrapper { navController },
         currentUser = mockedUser,
     )
 }
